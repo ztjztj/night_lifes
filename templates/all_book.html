@@ -1,83 +1,7 @@
+{% extends 'body_template.html' %}
 {% load staticfiles %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- saved from url=(0037)http://www.xbiquge.la/xiaoshuodaquan/ -->
-<html xmlns="http://www.w3.org/1999/xhtml" lang="">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <style id="znBdcsStyle" type="text/css">#bdcs-rec {
-        display: none;
-    }</style>
-    <title>小说大全_全部小说目录大全_新笔趣阁</title>
 
-    <meta name="keywords" content="小说大全">
-    <meta name="description" content="新笔趣阁是广大书友最值得收藏的网络小说阅读网，网站收录了当前最火热的网络小说，免费提供高质量的小说最新章节，是广大网络小说爱好者必备的小说阅读网。">
-    <link rel="stylesheet" type="text/css" href="{% static '全部小说_files/biquge.css' %}">
-    <script type="text/javascript" src="{% static '全部小说_files/push.js' %}"></script>
-    <script type="text/javascript" src="{% static '全部小说_files/push.js' %}"></script>
-    <script type="text/javascript" src="{% static '全部小说_files/js' %}"></script>
-    <script type="text/javascript" src="{% static '全部小说_files/hm.js' %}"></script>
-    <script type="text/javascript" src="{% static '全部小说_files/jquery.min.js' %}"></script>
-    <!--<script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script>-->
-    <script type="text/javascript" src="{% static '全部小说_files/bqg.js' %}"></script>
-    <script type="text/javascript" src="{% static '全部小说_files/logger.js' %}"></script>
-    <link href="{% static '全部小说_files/bdsstyle.css' %}" rel="stylesheet" type="text/css">
-</head>
-<body>
-<iframe frameborder="0" style="display: none;" src="{% static '全部小说_files/saved_resource.html' %}"></iframe>
-<div id="wrapper">
-    <script type="text/javascript">login();</script>
-    <div class="ywtop">
-        <div class="ywtop_con">
-            <div class="ywtop_sethome"><a href="http://www.xbiquge.la/zhuomian.php">将新笔趣阁快捷键保存到桌面</a></div>
-            <div class="ywtop_addfavorite"><a href="http://www.xbiquge.la/xiaoshuodaquan/#"
-                                              onclick="">收藏新笔趣阁</a>
-            </div>
-            <div class="nri">Hi,123456zxcasd&nbsp;&nbsp;<a href="http://www.xbiquge.la/modules/article/bookcase.php"
-                                                           target="_top">我的书架</a> | <a
-                    href="http://www.xbiquge.la/logout.php" target="_self">退出登录</a>&nbsp;
-            </div>
-        </div>
-    </div>
-
-    <div class="header">
-
-        <div class="header_logo">
-            <a href="http://www.xbiquge.la/">新笔趣阁</a>
-        </div>
-        <script type="text/javascript">bqg_panel();</script>
-        <div class="header_search">
-            <div id="bdcs">
-                <div class="bdcs-container">
-                    <meta http-equiv="x-ua-compatible" content="IE=9">
-                </div>
-            </div>
-        </div>
-        <div class="userpanel">&nbsp;<span style="color: red; ">留言：</span><a rel="nofllow"
-                                                                             href="http://www.xbiquge.la/newmessage.php?tosys=1"><span
-                style="color: red; ">求书加书</span></a>、<a rel="nofllow"
-                                                        href="http://www.xbiquge.la/newmessage.php?tosys=1">意见反馈</a><br><a
-                target="_blank" rel="nofllow" href="http://www.xbiquge.la/jifen.html">积分规则</a>&nbsp;&nbsp;<a
-                target="_blank" rel="nofllow" href="http://www.xbiquge.la/dns.html">若从新笔趣阁跳走点这里</a></div>
-
-
-    </div>
-    <div class="nav">
-        <ul>
-            <li><a href="http://www.xbiquge.la/">首页</a></li>
-            <li><a href="http://www.xbiquge.la/modules/article/bookcase.php">我的书架</a></li>
-            <li><a href="http://www.xbiquge.la/xuanhuanxiaoshuo/">玄幻小说</a></li>
-            <li><a href="http://www.xbiquge.la/xiuzhenxiaoshuo/">修真小说</a></li>
-            <li><a href="http://www.xbiquge.la/dushixiaoshuo/">都市小说</a></li>
-            <li><a href="http://www.xbiquge.la/chuanyuexiaoshuo/">穿越小说</a></li>
-            <li><a href="http://www.xbiquge.la/wangyouxiaoshuo/">网游小说</a></li>
-            <li><a href="http://www.xbiquge.la/kehuanxiaoshuo/">科幻小说</a></li>
-            <li><a href="http://www.xbiquge.la/paihangbang/">排行榜单</a></li>
-            <li><a href="http://www.xbiquge.la/xiaoshuodaquan/">全部小说</a></li>
-        </ul>
-    </div>
-    <script type="text/javascript">top_bar();</script>
-
+{% block body %}
     <div class="MessageDiv">
         <b>提示：本站收录的全部小说均在此页， 推荐使用Ctrl+F 来查找小说。</b>
     </div>
@@ -6133,51 +6057,5 @@
     <div class="dahengfu">
         <script type="text/javascript">bottom();</script>
     </div>
+{% endblock %}
 
-    <div class="footer">
-        <div class="footer_link"></div>
-        <div class="footer_cont">
-
-            <script type="text/javascript">footer();
-            right();
-            dl();</script>
-            <p>本站所有小说为转载作品，所有章节均由网友上传，转载至本站只是为了宣传本书让更多读者欣赏。</p>
-            <p>Copyright © 2015-2022 <a href="http://www.xbiquge.la/">新笔趣阁</a> All Rights Reserved.</p>
-            <p>沪ICP备14048333号</p>
-            <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6607142"
-                    src="{% static '全部小说_files/bds_s_v2.js' %}"></script>
-
-            <script type="text/javascript">document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date() / 3600000);</script>
-            undefined
-
-            <script type="text/javascript" charset="utf-8" src="{% static '全部小说_files/opensug.js' %}"></script>
-        </div>
-    </div>
-    <script type="text/javascript">
-        (function () {
-            var bp = document.createElement('script');
-            bp.src = '//push.zhanzhang.baidu.com/push.js';
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(bp, s);
-        })();
-    </script>
-    <script type="text/javascript">
-        (function () {
-            var bp = document.createElement('script');
-            var curProtocol = window.location.protocol.split(':')[0];
-            if (curProtocol === 'https') {
-                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-            } else {
-                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-            }
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(bp, s);
-        })();
-    </script>
-
-
-</div>
-
-<script type="text/javascript" charset="utf-8" src="{% static '全部小说_files/opensug.js' %}"></script>
-</body>
-</html>

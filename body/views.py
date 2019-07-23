@@ -1,29 +1,33 @@
 from django.shortcuts import render
 
 def index(request):
-    return render(request,'笔趣阁首页.html')
+    return render(request, 'index.html')
 # Create your views here.
 
 def bookrack(request):
-    return render(request,'笔趣阁书架.html')
+    return render(request, 'bookrack.html')
 
 def chapter(request):
-    return render(request,'章节信息页面.html')
+    return render(request, 'chapter.html')
 
 def register(request):
-    return render(request,'注册页面.html')
+    return render(request, 'register.html')
 
 def article(request):
 
-    return render(request, '文章页面信息.html')
+    return render(request, 'article.html')
 
 def ranking_list(request):
 
-    return render(request, '排行榜单.html')
+    return render(request, 'ranking_list.html')
 def classify(request):
 
-    return render(request, '分类页面展示.html')
+    return render(request, 'classify.html')
 
 def all_book(request):
 
-    return render(request, '全部小说.html')
+    return render(request, 'all_book.html')
+
+def retrieve_password(request):
+
+    return render(request, 'retrieve_password.html')
