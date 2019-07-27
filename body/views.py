@@ -70,9 +70,13 @@ def article(request):
     chapter = request.GET.get('chapter')
     book = models.BodyNoval.objects.get(id=book_id)
     info = models.Noval_room.objects.filter(book_foreign=book.book_url,book_chapter_id=chapter).values()
-    info = list(info)[0]
-    info['book_content'] = str(info['book_content']).replace('\r','')
-    return render(request, 'article.html', {"info": info})
+    try:
+        info = list(info)[0]
+        info['book_content'] = str(info['book_content']).replace('\r', '')
+    except IndexError:
+        info = {'book_section':'暂无此章内容'}
+
+    return render(request, 'article.html', {"info": info,'book_id':book_id})
 
 
 @csrf_exempt

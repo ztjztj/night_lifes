@@ -97,7 +97,7 @@
                 <div class="bottem1">
                     <a onclick="">投推荐票</a>
                     <a class="up_switch" onclick="article_ajax('{{ info.book_foreign }}','{{ info.book_chapter_id|add:-1 }}')">上一章</a>←
-                    <a href="http://www.xbiquge.la/10/10489/">章节目录</a> →
+                    <a href="/chapter/?id={{ book_id }}">章节目录</a> →
                     <a class="down_switch" onclick="article_ajax('{{ info.book_foreign }}','{{ info.book_chapter_id|add:+1 }}')">下一章</a>
                     <a href="javascript:" onclick="">加入书签</a>
                 </div>
@@ -109,7 +109,7 @@
             <div class="bottem2">
                 <a href="javascript:" onclick="showpop_vote(10489);">投推荐票</a>
                 <a class="up_switch" onclick="article_ajax('{{ info.book_foreign }}','{{ info.book_chapter_id|add:-1 }}')">上一章</a> ←
-                <a href="http://www.xbiquge.la/10/10489/">章节目录</a> →
+                <a href="/chapter/?id={{ book_id }}">章节目录</a> →
                 <a class="down_switch" onclick="article_ajax('{{ info.book_foreign }}','{{ info.book_chapter_id|add:+1 }}')">下一章</a>
                 <a href="javascript:" onclick="showpop_addmark(10489,4535761);">加入书签</a>
             </div>
