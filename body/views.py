@@ -66,8 +66,23 @@ def register(request):
     return render(request, 'register.html')
 
 def article(request):
+    book = "http://www.xbiquge.la/14/14963/"
+    chapter = '0'
+    info = models.Noval_room.objects.filter(book_foreign=book,book_chapter_id=chapter).values()
+    info = list(info)[0]
+    info['book_content'] = str(info['book_content']).replace('\r','')
+    return render(request, 'article.html', {"info": info})
 
-    return render(request, 'article.html')
+
+@csrf_exempt
+def article_ajax(request):
+    paramter = request.POST
+    book = paramter.get('book')
+    chapter = paramter.get('chapter')
+    info = models.Noval_room.objects.filter(book_foreign=book,book_chapter_id=chapter).values()
+    info = list(info)[0]
+    info['book_content'] = str(info['book_content']).replace('\r','')
+    return JsonResponse(info)
 
 def ranking_list(request):
 
