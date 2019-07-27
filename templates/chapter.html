@@ -4,42 +4,71 @@
     <div class="box_con">
         <div class="con_top">
             <div id="bdshare" class="bdshare_b" style="line-height: 12px;"><img
-                    src="{% static '章节信息页面_files/type-button-7.jpg' %}" alt="加载失败"><a class="shareCount" title="累计分享0次">0</a></div>
+                    src="{% static '章节信息页面_files/type-button-7.jpg' %}" alt="加载失败"><a class="shareCount" title="累计分享0次">0</a>
+            </div>
             <a href="http://www.xbiquge.la/">新笔趣阁</a> &gt; <a href="http://www.xbiquge.la/fenlei/2_1.html">修真小说</a> &gt;
             三寸人间最新章节目录
         </div>
         <div id="maininfo">
             <div id="info">
-                <h1>三寸人间</h1>
-                <p>作&nbsp;&nbsp;&nbsp;&nbsp;者：耳根</p>
+                <h1>{{ chapter_info.book_name }}</h1>
+                <p>作&nbsp;&nbsp;&nbsp;&nbsp;者：{{ chapter_info.book_author }}</p>
                 <p>动&nbsp;&nbsp;&nbsp;&nbsp;作：<a href="javascript:" onclick="showpop_addcase(10489);">加入书架</a>, <a
                         href="javascript:" onclick="showpop_vote(10489);">投推荐票</a>, <a
                         href="http://www.xbiquge.la/10/10489/#footer">直达底部</a></p>
-                <p>最后更新：2019-07-05 13:53:00</p>
-                <p>最新章节：<a href="http://www.xbiquge.la/10/10489/18394028.html">第680章 李无尘不是个好东西！</a></p>
+                <p>最后更新：{{ chapter_info.book_update|date:"Y-m-d H:i:s" }}</p>
+
             </div>
             <div id="intro">
-                <p><span style="color:#0066FF"><a href="http://m.xbiquge.la/wapbook/10489.html" target="_blank">手机阅读《三寸人间》无弹窗纯文字全文免费阅读</a></span>
+                <p><span style="color:#0066FF"><a href="http://m.xbiquge.la/wapbook/10489.html" target="_blank">手机阅读  无弹窗纯文字全文免费阅读</a></span>
 
                 </p>
 
-                <p> 举头三尺无神明，掌心三寸是人间。这是耳根继《仙逆》《求魔》《我欲封天》《一念永恒》后，创作的第五部长篇小说《三寸人间》。</p>
+                <p> {{ chapter_info.book_intro }}</p>
             </div>
         </div>
         <div id="sidebar">
-            <div id="fmimg"><img alt="三寸人间" src="{% static '章节信息页面_files/10489s.jpg' %}" width="120" height="150"><span
+            <div id="fmimg"><img alt="加载失败" src="{{ chapter_info.book_img }}" width="120" height="150"><span
                     class="b"></span></div>
         </div>
     </div>
-        <div class="box_con">
+    <div class="box_con">
         <div id="list">
             <dl>
-                {% for foo in all %}
-                    <dd><a href="#">{{ foo.book_section }}</a></dd>
+                {% for chapter in chapter_list %}
+
+                    <dd><a href="">{{ chapter.chapter_name }}</a></dd>
+
                 {% endfor %}
 
-
             </dl>
+            <div style="text-align: center"><a onclick="skip('{{ book_id}}','{{ page|add:-1 }}')">上一页</a><<< >>><a
+                    onclick="skip('{{ book_id }}','{{ page|add:1 }}')">下一页</a></div>
         </div>
+
     </div>
+    <script>
+        function skip(id,page) {
+            $.ajax({
+                url: '{% url 'chapter_ajax' %}',
+                dataType: 'json',
+                type: 'post',
+                data: {'id': id, 'page': page},
+                success: (function (datas) {
+                    var data = datas['chapter_list'];
+                    var page_up = datas['page'] - 1;
+                    var page_down = datas['page'] + 1;
+                    var book_id= datas['book_id'];
+                    str = '<dl>';
+                    for (i in data) {
+                        str += '<dd><a href="" >' + data[i]['chapter_name'] + '</a></dd>';
+                    }
+                    str += '</dl>';
+                    str += '<div style="text-align: center"> <a onclick="skip(\'' + book_id +'\',\''+ page_up + '\')"> 上一页</a> <<<  >>> <a onclick="skip(\'' + book_id +'\',\''+ page_down + '\')"> 下一页</a> </div>';
+                    $('#list').html(str)
+
+                })
+            })
+        }
+    </script>
 {% endblock %}
