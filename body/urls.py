@@ -11,4 +11,5 @@ urlpatterns = [
     path('classify/',views.classify,name="classify"),
     path('all_book/',views.all_book,name="all_book"),
     path('retrieve_password/',views.retrieve_password,name="retrieve_password"),
+
 ]
