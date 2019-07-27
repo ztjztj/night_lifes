@@ -70,8 +70,10 @@ def article(request):
     return render(request, 'article.html')
 
 def ranking_list(request):
+
     # 获取所有书的信息
     noval = BodyNoval.objects.all()
+
     # 玄幻
     xuanhuan = noval.filter(book_category='玄幻小说').order_by('-book_xiao')
     zong = xuanhuan[:10]
