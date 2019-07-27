@@ -28,6 +28,7 @@ def article(request):
     info['book_content'] = str(info['book_content']).replace('\r','')
     return render(request, 'article.html', {"info": info})
 
+
 @csrf_exempt
 def article_ajax(request):
     paramter = request.POST
@@ -37,6 +38,7 @@ def article_ajax(request):
     info = list(info)[0]
     info['book_content'] = str(info['book_content']).replace('\r','')
     return JsonResponse(info)
+
 
 def ranking_list(request):
 
