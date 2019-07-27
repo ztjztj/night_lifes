@@ -48,3 +48,16 @@ class bookrack(models.Model):
     class Meta:
         managed = False
         db_table = 'body_bookrack'
+
+
+# 章节
+class ChapterUrls(models.Model):
+    chapter_id = models.TextField(blank=True, null=True)
+    chapter_url = models.TextField(blank=True, null=True)
+    chapter_name = models.TextField(blank=True, null=True)
+    book_url = models.TextField(blank=True, null=True)
+    is_use = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'chapter_urls'

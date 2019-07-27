@@ -5,6 +5,7 @@ urlpatterns = [
     path('',views.index,name="index"),
     path('bookrack/',views.bookrack,name="bookrack"),
     path('chapter/',views.chapter,name="chapter"),
+    path('chapter_ajax',views.chapter_ajax,name = "chapter_ajax"),
     path('register/',views.register,name="register"),
     path('article/',views.article,name="article"),
     path('ranking_list/',views.ranking_list,name="ranking_list"),
