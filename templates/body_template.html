@@ -2,7 +2,6 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- saved from url=(0022)http://www.xbiquge.la/ -->
 <html lang="">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -14,20 +13,9 @@
     <meta name="keywords" content="新笔趣阁,笔趣阁小说阅读网，新笔趣阁无弹窗小说阅读网">
     <meta name="description"
           content="笔趣阁是广大书友最值得收藏的网络小说阅读网，新笔趣阁收录了当前最火热的网络小说，新笔趣阁免费提供高质量的小说最新章节，新笔趣阁是广大网络小说爱好者必备的小说阅读网。">
-    <link rel="stylesheet" type="text/css" href="{% static '笔趣阁首页_files/biquge.css' %}">
-    <script type="text/javascript" src="{% static '笔趣阁首页_files/auto_dup' %}"></script>
-    <script type="text/javascript" src="{% static '笔趣阁首页_files/push.js' %}"></script>
-    <script type="text/javascript" src="{% static '笔趣阁首页_files/js' %}"></script>
-    <script type="text/javascript" src="{% static '笔趣阁首页_files/hm.js' %}"></script>
-    <script type="text/javascript" src="{% static '笔趣阁首页_files/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static '笔趣阁首页_files/bqg.js' %}"></script>
-    <link rel="shortcut icon" href="http://www.xbiquge.la/favicon.ico">
-    <meta name="baidu-site-verification" content="cBwSh6gmX8">
+    <link rel="stylesheet" type="text/css" href="{% static 'bqg_files/biquge.css' %}">
+    <script type="text/javascript" src="{% static 'bqg_files/jquery.min.js' %}"></script>
 
-
-    <!--<script>QIHOO_UNION_F_SLOT={w:500, h:48, ls:"s44755a2d8d",position:7, display:2,origin:0};</script><script src="http://s.lianmeng.360.cn/so/f.js" charset="utf-8"></script> -->
-    <script type="text/javascript" src="{% static '笔趣阁首页_files/logger.js' %}"></script>
-    <link href="{% static '笔趣阁首页_files/bdsstyle.css' %}' %}" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div id="BAIDU_DUP_fp_wrapper"
@@ -39,102 +27,73 @@
 <div id="wrapper">
 
     <div class="ywtop">
+
         <div class="ywtop_con">
-            <div class="ywtop_sethome"><a href="">将新笔趣阁快捷键保存到桌面</a></div>
-            <div class="ywtop_addfavorite"><a href="http://www.xbiquge.la/#"
-                                              onclick="">收藏新笔趣阁</a>
-            </div>
-            <div class="nri">Hi,123456zxcasd&nbsp;&nbsp;<a href="{% url 'bookrack' %}"
-                                                           target="_top">我的书架</a> | <a
+
+            <div class="nri" id="nri2" style="display: none"><span id="hhh">&nbsp;&nbsp;</span><a
+                    href="{% url 'bookrack' %}"
+                    target="_top">&nbsp;&nbsp;我的书架
+            </a> | <a
                     href="" target="_self">退出登录</a>&nbsp;
             </div>
+            <div class="nri" id="nri1" style="display:block;">
+                <form name="frmlogin" id="frmlogin" method="post" action="{% url 'index' %}">
+                    <div class="cc">
+                        <div class="txt">账号：</div>
+                        <div class="inp"><input type="text" name="userNumber" id="username"></div>
+                    </div>
+                    <div class="cc">
+                        <div class="txt">密码：</div>
+                        <div class="inp"><input type="password" name="password" id="password"></div>
+                    </div>
+                    <div class="frii"><input type="button" class="int" value="登录" onclick="test_ajax()"></div>
+                    <div class="ccc">
+                        <div class="txtt"><a href="{% url 'retrieve_password' %}">忘记密码</a></div>
+                        <div class="txtt"><a href="{% url 'register' %}">用户注册</a></div>
+                    </div>
+                </form>
+            </div>
 
-            <div class="nri">
-            <form name="frmlogin" id="frmlogin" method="post"
-                  action="">
-                <div class="cc">
-                    <div class="txt">账号：</div>
-                    <div class="inp"><input type="text" name="LoginForm[username]" id="username"></div>
-                </div>
-                <div class="cc">
-                    <div class="txt">密码：</div>
-                    <div class="inp"><input type="password" name="LoginForm[password]" id="password"></div>
-                </div>
-                <div class="frii"><input type="submit" class="int" value=" "></div>
-                <div class="ccc">
-                    <div class="txtt"><a href="{% url 'retrieve_password' %}">忘记密码</a></div>
-                    <div class="txtt"><a href="{% url 'register' %}">用户注册</a></div>
-                </div>
-            </form>
-        </div>
-        </div>
 
+            <div class="header">
+
+            </div>
+            <script type="text/javascript">bqg_panel();</script>
+            <div class="header_search">
+                <div id="bdcs"></div>
+            </div>
+            <div class="userpanel">&nbsp;<span style="color: red; ">留言：</span><a rel="nofllow"
+                                                                                 href=""><span
+                    style="color: red; ">求书加书</span></a>、<a rel="nofllow"
+                                                             href="">意见反馈</a><br><a
+                    target="_blank" rel="nofllow" href="http://www.xbiquge.la/jifen.html">积分规则</a>&nbsp;&nbsp;<a
+                    target="_blank" rel="nofllow" href="http://www.xbiquge.la/dns.html">若从新笔趣阁跳走点这里</a>
+            </div>
+
+        </div>
+        <div class="nav">
+            <ul>
+                <li><a href="{% url 'index' %}">首页</a></li>
+                <li><a href="{% url 'bookrack' %}">我的书架</a></li>
+                <li><a href="{% url 'classify' %}">玄幻小说</a></li>
+                <li><a href="{% url 'classify' %}">修真小说</a></li>
+                <li><a href="{% url 'classify' %}">都市小说</a></li>
+                <li><a href="{% url 'classify' %}">穿越小说</a></li>
+                <li><a href="{% url 'classify' %}">网游小说</a></li>
+                <li><a href="{% url 'classify' %}">科幻小说</a></li>
+                <li><a href="{% url 'ranking_list' %}">排行榜单</a></li>
+                <li><a href="{% url 'classify' %}">全部小说</a></li>
+            </ul>
+        </div>
+        {% block body %}
+
+        {% endblock %}
 
     </div>
 
-    <div class="header">
-
-        <div class="header_logo">
-            <a href="http://www.xbiquge.la/">新笔趣阁</a>
-        </div>
-        <script type="text/javascript">bqg_panel();</script>
-        <div class="header_search">
-            <div id="bdcs"></div>
-        </div>
-        <div class="userpanel">&nbsp;<span style="color: red; ">留言：</span><a rel="nofllow"
-                                                                             href=""><span
-                style="color: red; ">求书加书</span></a>、<a rel="nofllow"
-                                                        href="">意见反馈</a><br><a
-                target="_blank" rel="nofllow" href="http://www.xbiquge.la/jifen.html">积分规则</a>&nbsp;&nbsp;<a
-                target="_blank" rel="nofllow" href="http://www.xbiquge.la/dns.html">若从新笔趣阁跳走点这里</a></div>
 
 
-    </div>
-    <div class="nav">
-        <ul>
-            <li><a href="{% url 'index' %}">首页</a></li>
-            <li><a href="{% url 'bookrack' %}">我的书架</a></li>
-            <li><a href="{% url 'classify' %}">玄幻小说</a></li>
-            <li><a href="{% url 'classify' %}">修真小说</a></li>
-            <li><a href="{% url 'classify' %}">都市小说</a></li>
-            <li><a href="{% url 'classify' %}">穿越小说</a></li>
-            <li><a href="{% url 'classify' %}">网游小说</a></li>
-            <li><a href="{% url 'classify' %}">科幻小说</a></li>
-            <li><a href="{% url 'ranking_list' %}">排行榜单</a></li>
-            <li><a href="{% url 'classify' %}">全部小说</a></li>
-        </ul>
-    </div>
-    <script type="text/javascript">top_bar();</script>
-    {% block body %}
-
-    {% endblock %}
 
 </div>
-
-<div class="dahengfu">
-    <script type="text/javascript">bottom();</script>
-</div>
-
-<div class="footer">
-    <div class="footer_link"></div>
-    <div class="footer_cont">
-
-        <script>footer();
-        right();
-        dl();</script>
-        <p>本站所有小说为转载作品，所有章节均由网友上传，转载至本站只是为了宣传本书让更多读者欣赏。</p>
-        <p>Copyright © 2015-2022 <a href="http://www.xbiquge.la/">新笔趣阁</a> All Rights Reserved.</p>
-        <p>沪ICP备14048333号</p>
-        <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6607142"
-                src="{% static '笔趣阁首页_files/bds_s_v2.js' %}"></script>
-
-        <script type="text/javascript">document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date() / 3600000);</script>
-        undefined
-
-        <script charset="utf-8" src="{% static '笔趣阁首页_files/opensug.js' %}" type="text/javascript"></script>
-    </div>
-</div>
-
-
 </body>
 </html>

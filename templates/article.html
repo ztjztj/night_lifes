@@ -88,12 +88,9 @@
                              value="">&nbsp;夜间<input type="checkbox" name="night" id="night"
                                                      onchange="javascript:setNight();" value=""></div>
 
-
-
                 <a href="http://www.xbiquge.la/">新笔趣阁</a> &gt; <a href="http://www.xbiquge.la/fenlei/2_1.html">修真小说</a>
                 &gt; <a href="http://www.xbiquge.la/10/10489/">三寸人间</a> &gt; 正文卷 第一章 我要减肥！
             </div>
-
             <div class="bookname">
                 <h1 id="chapter_name">{{ info.book_section }}</h1>
 
@@ -102,11 +99,11 @@
                     <a class="up_switch" onclick="article_ajax('{{ info.book_foreign }}','{{ info.book_chapter_id|add:-1 }}')">上一章</a>←
                     <a href="http://www.xbiquge.la/10/10489/">章节目录</a> →
                     <a class="down_switch" onclick="article_ajax('{{ info.book_foreign }}','{{ info.book_chapter_id|add:+1 }}')">下一章</a>
-                    <a href="javascript:" onclick="showpop_addmark(10489,4535761);">加入书签</a>
+                    <a href="javascript:" onclick="">加入书签</a>
                 </div>
             </div>
             <div id="content">
-                {{ info.book_content |safe}}
+                {{ info.book_content|safe}}
 
             </div>
             <div class="bottem2">
