@@ -1,36 +1,46 @@
 {% extends 'body_template.html' %}
 {% load staticfiles %}
-{% block body %}
-    <div id="main">
+{% block body  %}
+    <div id="main" >
         <div id="content"><br>
-            <form name="frmregister" id="frmregister" action=""
-                  method="post">
+
+            <form name="frmregister" id="frmregister" action="{% url 'register' %}"
+                  method="post" >
                 <table class="grid" width="580" align="center">
                     <caption>新用户注册</caption>
                     <tbody>
                     <tr>
-                        <td class="odd" width="25%">用户名<span class="hottext">(必填)</span></td>
-                        <td class="even"><input type="text" class="text" name="SignupForm[username]" id="username"
-                                                size="25" maxlength="30" style="width:160px" value=""> <span
+                        <td class="odd" width="25%">账号<span class="hottext">(必填)</span></td>
+                        <td class="even"><input type="text" class="text" name="userNumber" id="usernumber"
+                                                size="25" maxlength="30" style="width:160px" value="" onblur="verify('账号',this.value,'usermsg')"> <span
                                 id="usermsg"></span></td>
                     </tr>
                     <tr>
                         <td class="odd" width="25%">密码<span class="hottext">(必填)</span></td>
-                        <td class="even"><input type="password" class="text" name="SignupForm[password]" id="password"
-                                                size="25" maxlength="20" style="width:160px" value=""> <span
+                        <td class="even"><input type="password" class="text" name="password" id="password"
+                                                size="25" maxlength="20" style="width:160px" value="" onblur="verify('密码',this.value,'passmsg')"> <span
                                 id="passmsg"></span></td>
                     </tr>
+{#                    <tr>#}
+{#                        <td class="odd" width="25%">重复密码<span class="hottext">(必填)</span></td>#}
+{#                        <td class="even"><input type="password" class="text" name="password2" id="repassword" size="25"#}
+{#                                                maxlength="20" style="width:160px" value="" onblur="verify('重复密码',this.value,'repassmsg')"> <span#}
+{#                                id="repassmsg"></span></td>#}
+{#                    </tr>#}
+
                     <tr>
-                        <td class="odd" width="25%">重复密码<span class="hottext">(必填)</span></td>
-                        <td class="even"><input type="password" class="text" name="repassword" id="repassword" size="25"
-                                                maxlength="20" style="width:160px" value=""> <span
-                                id="repassmsg"></span></td>
+                        <td class="odd" width="25%">用户名<span class="hottext">(必填)</span></td>
+                        <td class="even"><input type="text" class="text" name="user_name" id="repassword" size="25"
+                                                maxlength="20" style="width:160px" value="" onblur="verify('用户名',this.value,'yhm')"> <span
+                                id="yhm"></span></td>
                     </tr>
+
                     <tr>
                         <td class="odd" width="25%">Email<span class="hottext">(必填)</span></td>
-                        <td class="even"><input type="text" class="text" name="SignupForm[email]" id="email" size="25"
-                                                maxlength="60" style="width:160px" value=""> <span
-                                id="mailmsg"></span><input type="checkbox" class="checkbox" name="viewemail" value="1">公开邮箱
+                        <td class="even"><input type="text" class="text" name="email" id="email" size="25"
+                                                maxlength="60" style="width:160px" value="" onblur="verify('邮箱',this.value,'mailmsg')"> <span
+                                id="mailmsg"></span>
+{#                            <input type="checkbox" class="checkbox" name="viewemail" value="1">公开邮箱#}
                         </td>
                     </tr>
                     <tr>
@@ -45,11 +55,11 @@
                         <td class="even"><input type="text" class="text" name="qq" id="qq" size="25" maxlength="15"
                                                 style="width:160px" value=""></td>
                     </tr>
-                    <tr>
-                        <td class="odd" width="25%">个人网站</td>
-                        <td class="even"><input type="text" class="text" name="url" id="url" size="25" maxlength="100"
-                                                style="width:160px" value=""></td>
-                    </tr>
+{#                    <tr>#}
+{#                        <td class="odd" width="25%">个人网站</td>#}
+{#                        <td class="even"><input type="text" class="text" name="url" id="url" size="25" maxlength="100"#}
+{#                                                style="width:160px" value=""></td>#}
+{#                    </tr>#}
 
 
                     <tr>
@@ -62,4 +72,16 @@
             </form>
             <br></div>
     </div>
+
+    <script>
+            function verify(type,data,error_type) {           //用户名验证
+            $.post(
+                "{% url 'verify' %}",
+                {'type':type,'data':data,'error_type':error_type},
+                function (data) {
+                    document.getElementById(data.error_types).innerHTML = data.verify
+                }
+            )
+        }
+    </script>
 {% endblock %}

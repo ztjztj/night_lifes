@@ -1,16 +1,138 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from .models import *
 from .import models
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
+def exit(request):
+    request.session.flush()
+    return redirect(index)
+
+
+
+@csrf_exempt     #ajax的csrf验证
 def index(request):
-    return render(request, 'index.html')
+    if request.method =='GET':
+        if request.session.has_key('userNumber'):
+            user_name =request.session['user_name']
+            return render(request,'index.html',{'user_name':user_name})
+        else:
+            return render(request,'index.html')
+
+    else:
+        userNumber = request.POST.get('userNumber')
+        password = request.POST.get('password')
+        print(userNumber,password)
+        # user = models.BodyUser.objects.get(userNumber=userNumber,password=password)
+
+        try:
+            user = models.BodyUser.objects.get(userNumber=userNumber,password=password)
+        except  models.BodyUser.DoesNotExist:
+            user=None
+
+        print('user='+str(user))
+        if user != None:
+            request.session['userNumber'] = userNumber
+            request.session['passwprd'] = password
+            request.session['user_name'] = user.user_name
+            user_name = request.session['user_name']
+            print('user_name=',user_name)
+            return render(request, 'index.html', {'user_name': user_name})
+            # return JsonResponse({'user_name':user_name})
+        else:
+            return render(request, 'index.html')
+            # return JsonResponse({'user_name':'用户名或者密码错误'})
+
+
+
+
+def register(request):
+    if request.method=='GET':
+        return render(request,'register.html')
+    else:
+        userNumber = request.POST.get('userNumber')
+        password =request.POST.get('password')
+        password2 =request.POST.get('password')
+        user_name =request.POST.get('user_name')
+        email =request.POST.get('email')
+        sex =request.POST.get('sex')
+        qq =request.POST.get('qq')
+
+        print(userNumber,password,password2,email,sex,qq)
+
+        bodyuser =models.BodyUser()
+        bodyuser.userNumber=userNumber
+        bodyuser.password =password
+        bodyuser.user_name=user_name
+        bodyuser.email=email
+        bodyuser.sex=sex
+        bodyuser.qq =qq
+
+        bodyuser.save()
+        return render(request, 'index.html')
+
+
+def verify(request):
+    type = request.POST.get('type')
+    data=request.POST.get('data')
+    error_type = request.POST.get('error_type')
+    print(type,data)
+    if type =='账号':
+        if data =='':
+            return JsonResponse({'verify':'账号不能为空','error_types':error_type})
+        else:
+            try:
+                user = models.BodyUser.objects.get(userNumber=data)
+            except models.BodyUser.DoesNotExist:
+                user =None
+            if user ==None:
+                return JsonResponse({'verify':'账号暂未注册，可以使用','error_types':error_type})
+            else:
+                return JsonResponse({'verify':'账号已被注册，请您更换账号','error_types':error_type})
+    elif type =='密码':
+
+        if data == '':
+            return JsonResponse({'verify': '密码不能为空','error_types':error_type})
+        else:
+            return JsonResponse({'verify': '请记住您输入的密码','error_types':error_type})
+
+    elif type =='用户名':
+        if data == '':
+            return JsonResponse({'verify': '用户名不能为空','error_types':error_type})
+        else:
+            try:
+                user =models.BodyUser.objects.get(user_name=data)
+            except models.BodyUser.DoesNotExist:
+                user =None
+            if user==None:
+                return JsonResponse({'verify':'该用户名可以使用','error_types':error_type})
+            else:
+                return JsonResponse({'verify':'该用户名已被使用','error_types':error_type})
+
+    elif type =='邮箱':
+        if data == '':
+            return JsonResponse({'verify': '邮箱不能为空','error_types':error_type})
+        else:
+            try:
+                user =models.BodyUser.objects.get(email=data)
+            except models.BodyUser.DoesNotExist:
+                user =None
+            if user==None:
+                return JsonResponse({'verify':'该邮箱可以使用','error_types':error_type})
+            else:
+                return JsonResponse({'verify':'该邮箱已被使用','error_types':error_type})
+    else:
+        return JsonResponse({'verify':'请输入正确内容','error_types':error_type})
 
 
 def bookrack(request):
-    return render(request, 'bookrack.html')
+
+    if request.session.has_key('userNumber'):
+        user_name =request.session['user_name']
+        return render(request,'bookrack.html',{'user_name':user_name})
+    else:
+        return render(request,'bookrack.html')
 
 
 # 章节信息
@@ -58,12 +180,6 @@ def chapter_ajax(request):
 
     return JsonResponse(info)
 
-
-
-
-
-def register(request):
-    return render(request, 'register.html')
 
 def article(request):
     book_id = request.GET.get('id')

@@ -15,28 +15,58 @@
           content="笔趣阁是广大书友最值得收藏的网络小说阅读网，新笔趣阁收录了当前最火热的网络小说，新笔趣阁免费提供高质量的小说最新章节，新笔趣阁是广大网络小说爱好者必备的小说阅读网。">
     <link rel="stylesheet" type="text/css" href="{% static 'bqg_files/biquge.css' %}">
     <script type="text/javascript" src="{% static 'bqg_files/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bqg_files/bqg.js' %}"></script>
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+
+    <script>
+        function test_ajax() {
+            $.post(
+                '{% url "index" %}',
+                $('#frmlogin').serialize(),
+                function (data) {
+
+                    alert(data.user_name);
+                    user_name = data.user_name;
+
+                    {#document.getElementById("#a").style.display="block";#}
+                    {#document.getElementById("#b").style.display="none";#}
+                    {#document.getElementsByClassName(".ywtop").style.display="block";#}
+                    {#document.getElementsByClassName(".ywtop").style.display="inline";#}
+                    {#document.getElementsByClassName(".nri").style.display="none";#}
+
+                    if (data['user_name'] === '用户名或者密码错误') {
+                        {#$("#nri1").hide();#}
+                        {#$("#nri2").show();#}
+                        {#$('#hhh').html(user_name);#}
+                        location.href='{% url 'index' %}'
+                    }else {
+                        $("#nri1").hide();
+                        $("#nri2").show();
+                        $('#hhh').html(user_name);
+                    }
+
+                }
+            )
+        }
+    </script>
 
 </head>
-<body>
-<div id="BAIDU_DUP_fp_wrapper"
-     style="position: absolute; left: -1px; bottom: -1px; z-index: 0; width: 0; height: 0; overflow: hidden; visibility: hidden; display: none;">
-    <iframe id="BAIDU_DUP_fp_iframe" src="{% static '笔趣阁首页_files/o.html' %}"
-            style="width: 0; height: 0; visibility: hidden; display: none;"></iframe>
-</div>
-<iframe frameborder="0" style="display: none;" src="{% static '笔趣阁首页_files/saved_resource.html' %}"></iframe>
+<body onload="frmregister.userNumber.focus()">
+
 <div id="wrapper">
+
 
     <div class="ywtop">
 
         <div class="ywtop_con">
+{% if user_name %}
 
-            <div class="nri" id="nri2" style="display: none"><span id="hhh">&nbsp;&nbsp;</span><a
-                    href="{% url 'bookrack' %}"
-                    target="_top">&nbsp;&nbsp;我的书架
-            </a> | <a
-                    href="" target="_self">退出登录</a>&nbsp;
+            <div class="nri" id="nri2" ><span id="hhh">{{ user_name }}&nbsp;&nbsp;</span><a href="{% url 'bookrack' %}"
+                                                                                           target="_top">&nbsp;&nbsp;我的书架</a> | <a
+                    href="{% url 'exit' %}" target="_self">退出登录</a>&nbsp;
             </div>
-            <div class="nri" id="nri1" style="display:block;">
+    {% else  %}
+            <div class="nri" id="nri1" >
                 <form name="frmlogin" id="frmlogin" method="post" action="{% url 'index' %}">
                     <div class="cc">
                         <div class="txt">账号：</div>
@@ -46,29 +76,31 @@
                         <div class="txt">密码：</div>
                         <div class="inp"><input type="password" name="password" id="password"></div>
                     </div>
-                    <div class="frii"><input type="button" class="int" value="登录" onclick="test_ajax()"></div>
+                    <div class="frii"><input type="submit" style="color:grey;background-position:0 -96px;border:medium none;background-color:#E1ECED;float:left;font-size:14px;height:21px;line-height:21px;text-align:center;width:70px;" value="登录"></div>
                     <div class="ccc">
                         <div class="txtt"><a href="{% url 'retrieve_password' %}">忘记密码</a></div>
                         <div class="txtt"><a href="{% url 'register' %}">用户注册</a></div>
                     </div>
                 </form>
             </div>
+{% endif %}
+
+        </div>
+    </div>
 
 
-            <div class="header">
+    <div class="header">
 
-            </div>
-            <script type="text/javascript">bqg_panel();</script>
-            <div class="header_search">
-                <div id="bdcs"></div>
-            </div>
-            <div class="userpanel">&nbsp;<span style="color: red; ">留言：</span><a rel="nofllow"
-                                                                                 href=""><span
-                    style="color: red; ">求书加书</span></a>、<a rel="nofllow"
-                                                             href="">意见反馈</a><br><a
-                    target="_blank" rel="nofllow" href="http://www.xbiquge.la/jifen.html">积分规则</a>&nbsp;&nbsp;<a
-                    target="_blank" rel="nofllow" href="http://www.xbiquge.la/dns.html">若从新笔趣阁跳走点这里</a>
-            </div>
+        <script type="text/javascript">bqg_panel();</script>
+        <div class="header_search">
+            <div id="bdcs"></div>
+        </div>
+        <div class="userpanel">&nbsp;<span style="color: red; ">留言：</span><a rel="nofllow"
+                                                                             href=""><span
+                style="color: red; ">求书加书</span></a>、<a rel="nofllow"
+                                                        href="">意见反馈</a><br><a
+                target="_blank" rel="nofllow" href="http://www.xbiquge.la/jifen.html">积分规则</a>&nbsp;&nbsp;<a
+                target="_blank" rel="nofllow" href="http://www.xbiquge.la/dns.html">若从新笔趣阁跳走点这里</a></div>
 
         </div>
         <div class="nav">
@@ -93,7 +125,5 @@
 
 
 
-
-</div>
 </body>
 </html>
