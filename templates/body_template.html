@@ -23,7 +23,7 @@
             $.post(
                 '{% url "index" %}',
                 $('#frmlogin').serialize(),
-                function (data) {
+                function (data)  {
 
                     alert(data.user_name);
                     user_name = data.user_name;
@@ -117,6 +117,7 @@
             </ul>
         </div>
         {% block body %}
+
 
         {% endblock %}
 

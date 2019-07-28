@@ -124,6 +124,7 @@ def verify(request):
                 return JsonResponse({'verify':'该邮箱已被使用','error_types':error_type})
     else:
         return JsonResponse({'verify':'请输入正确内容','error_types':error_type})
+        # return render(request,'error.html')
 
 
 def bookrack(request):   #书架
@@ -197,6 +198,7 @@ def article(request):   #文章内容
         info['book_content'] = str(info['book_content']).replace('\r', '')
     except IndexError:
         info = {'book_section':'暂无此章内容'}
+        return render(request,'error.html',info)
     if request.session.has_key('userNumber'):
         user_name =request.session['user_name']
         return render(request, 'article.html', {"info": info,'book_id':book_id,'book_category':book_category,'book_name':book_name,'user_name':user_name})
