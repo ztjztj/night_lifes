@@ -12,6 +12,7 @@
         <div id="content">
             <div id="hotcontent">
                 <div class="ll">
+                {# 各种分类的展示图片的小说 #}
                     {% for zhan in zhans %}
                         <div class="item">
                             <div class="image"><a href=" /chapter/?id={{ zhan.id }}"><img src="{{ zhan.book_img }}" alt="{{ zhan.book_name }}" width="120" height="150"></a>
@@ -28,6 +29,7 @@
 
             <div id="newscontent">
                 <div class="l">
+                {# 各种更新的好看小说 #}
                     <h2>好看的{{classify }}最近更新列表</h2>
                     <ul>
                         {% for updatum in updata %}
@@ -67,6 +69,7 @@
 
 
                 <div class="r">
+                {# 各种好看的小说 #}
                     <h2>好看的{{ classify }}</h2>
                     <ul>
                         {% for foo in hao %}
