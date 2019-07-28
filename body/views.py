@@ -301,9 +301,6 @@ def ranking_list(request):    #排行榜
     else:
         return render(request, 'ranking_list.html', dict1)
 
-def classify(request):
-    return render(request, 'ranking_list.html',dict)
-
 #分类页面
 def classify(request,classify):
     # print(classify)
