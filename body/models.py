@@ -5,9 +5,14 @@ class BodyUser(models.Model):
     password = models.CharField(max_length=20, verbose_name="密码")
     user_name = models.CharField(max_length=20, verbose_name="用户名")
 
+    email = models.CharField(max_length=250, blank=True, null=True,verbose_name="邮箱")
+    sex = models.IntegerField(blank=True, null=True,verbose_name="性别")
+    qq = models.CharField(max_length=50, blank=True, null=True,verbose_name="QQ")
+
     class Meta:
         managed = False
         db_table = 'body_user'
+
 
 class BodyNoval(models.Model):
 

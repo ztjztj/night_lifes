@@ -5,12 +5,134 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
+def exit(request):
+    request.session.flush()
+    return redirect(index)
+
+
+
+@csrf_exempt     #ajax的csrf验证
 def index(request):
-    return render(request, 'index.html')
+    if request.method =='GET':
+        if request.session.has_key('userNumber'):
+            user_name =request.session['user_name']
+            return render(request,'index.html',{'user_name':user_name})
+        else:
+            return render(request,'index.html')
+
+    else:
+        userNumber = request.POST.get('userNumber')
+        password = request.POST.get('password')
+        print(userNumber,password)
+        # user = models.BodyUser.objects.get(userNumber=userNumber,password=password)
+
+        try:
+            user = models.BodyUser.objects.get(userNumber=userNumber,password=password)
+        except  models.BodyUser.DoesNotExist:
+            user=None
+
+        print('user='+str(user))
+        if user != None:
+            request.session['userNumber'] = userNumber
+            request.session['passwprd'] = password
+            request.session['user_name'] = user.user_name
+            user_name = request.session['user_name']
+            print('user_name=',user_name)
+            return render(request, 'index.html', {'user_name': user_name})
+            # return JsonResponse({'user_name':user_name})
+        else:
+            return render(request, 'index.html')
+            # return JsonResponse({'user_name':'用户名或者密码错误'})
 
 
-def bookrack(request):
-    return render(request, 'bookrack.html')
+
+
+def register(request):        #注册
+    if request.method=='GET':
+        return render(request,'register.html')
+    else:
+        userNumber = request.POST.get('userNumber')
+        password =request.POST.get('password')
+        password2 =request.POST.get('password')
+        user_name =request.POST.get('user_name')
+        email =request.POST.get('email')
+        sex =request.POST.get('sex')
+        qq =request.POST.get('qq')
+
+        print(userNumber,password,password2,email,sex,qq)
+
+        bodyuser =models.BodyUser()
+        bodyuser.userNumber=userNumber
+        bodyuser.password =password
+        bodyuser.user_name=user_name
+        bodyuser.email=email
+        bodyuser.sex=sex
+        bodyuser.qq =qq
+
+        bodyuser.save()
+        return render(request, 'index.html')
+
+
+def verify(request):
+    type = request.POST.get('type')
+    data=request.POST.get('data')
+    error_type = request.POST.get('error_type')
+    print(type,data)
+    if type =='账号':
+        if data =='':
+            return JsonResponse({'verify':'账号不能为空','error_types':error_type})
+        else:
+            try:
+                user = models.BodyUser.objects.get(userNumber=data)
+            except models.BodyUser.DoesNotExist:
+                user =None
+            if user ==None:
+                return JsonResponse({'verify':'账号暂未注册，可以使用','error_types':error_type})
+            else:
+                return JsonResponse({'verify':'账号已被注册，请您更换账号','error_types':error_type})
+    elif type =='密码':
+
+        if data == '':
+            return JsonResponse({'verify': '密码不能为空','error_types':error_type})
+        else:
+            return JsonResponse({'verify': '请记住您输入的密码','error_types':error_type})
+
+    elif type =='用户名':
+        if data == '':
+            return JsonResponse({'verify': '用户名不能为空','error_types':error_type})
+        else:
+            try:
+                user =models.BodyUser.objects.get(user_name=data)
+            except models.BodyUser.DoesNotExist:
+                user =None
+            if user==None:
+                return JsonResponse({'verify':'该用户名可以使用','error_types':error_type})
+            else:
+                return JsonResponse({'verify':'该用户名已被使用','error_types':error_type})
+
+    elif type =='邮箱':
+        if data == '':
+            return JsonResponse({'verify': '邮箱不能为空','error_types':error_type})
+        else:
+            try:
+                user =models.BodyUser.objects.get(email=data)
+            except models.BodyUser.DoesNotExist:
+                user =None
+            if user==None:
+                return JsonResponse({'verify':'该邮箱可以使用','error_types':error_type})
+            else:
+                return JsonResponse({'verify':'该邮箱已被使用','error_types':error_type})
+    else:
+        return JsonResponse({'verify':'请输入正确内容','error_types':error_type})
+
+
+def bookrack(request):   #书架
+
+    if request.session.has_key('userNumber'):
+        user_name =request.session['user_name']
+        return render(request,'bookrack.html',{'user_name':user_name})
+    else:
+        return render(request,'bookrack.html')
 
 
 # 章节信息
@@ -29,8 +151,12 @@ def chapter(request):
     chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id')
     chapter_list = chapter_list[0:102]
 
-    return render(request, 'chapter.html', {'chapter_info': chapter_info, 'chapter_list': chapter_list,'page':1,'book_id':book_id})
-
+    if request.session.has_key('userNumber'):
+        user_name =request.session['user_name']
+        return render(request, 'chapter.html', {'chapter_info': chapter_info, 'chapter_list': chapter_list,'page':1,'book_id':book_id,'user_name':user_name})
+    else:
+        return render(request, 'chapter.html',
+                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id})
 
 
 # 使用ajax跳转章节分页
@@ -50,7 +176,7 @@ def chapter_ajax(request):
     book_id = request_list.get('id')
     page = request_list.get('page')
 
-    chapter_info = models.BodyNoval.objects.filter(id = book_id)[0]
+    chapter_info = models.BodyNoval.objects.filter(id =book_id)[0]
     chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id').values()
     chapter_list = chapter_list[(int(page)-1)*102:int(page)*102].values()
     chapter_list = list(chapter_list)
@@ -59,23 +185,26 @@ def chapter_ajax(request):
     return JsonResponse(info)
 
 
-
-
-
-def register(request):
-    return render(request, 'register.html')
-
-def article(request):
-    book = "http://www.xbiquge.la/14/14963/"
-    chapter = '0'
-    info = models.Noval_room.objects.filter(book_foreign=book,book_chapter_id=chapter).values()
-    info = list(info)[0]
-    info['book_content'] = str(info['book_content']).replace('\r','')
-    return render(request, 'article.html', {"info": info})
-
+def article(request):   #文章内容
+    book_id = request.GET.get('id')
+    chapter = request.GET.get('chapter')
+    book = models.BodyNoval.objects.get(id=book_id)
+    book_category =request.GET.get('book_category')
+    book_name=request.GET.get('book_name')
+    info = models.Noval_room.objects.filter(book_foreign=book.book_url,book_chapter_id=chapter).values()
+    try:
+        info = list(info)[0]
+        info['book_content'] = str(info['book_content']).replace('\r', '')
+    except IndexError:
+        info = {'book_section':'暂无此章内容'}
+    if request.session.has_key('userNumber'):
+        user_name =request.session['user_name']
+        return render(request, 'article.html', {"info": info,'book_id':book_id,'book_category':book_category,'book_name':book_name,'user_name':user_name})
+    else:
+        return render(request, 'article.html', {"info": info,'book_category':book_category,'book_name':book_name,'book_id': book_id})
 
 @csrf_exempt
-def article_ajax(request):
+def article_ajax(request):     #文章内容ajax
     paramter = request.POST
     book = paramter.get('book')
     chapter = paramter.get('chapter')
@@ -84,7 +213,7 @@ def article_ajax(request):
     info['book_content'] = str(info['book_content']).replace('\r','')
     return JsonResponse(info)
 
-def ranking_list(request):
+def ranking_list(request):    #排行榜
 
     # 获取所有书的信息
     noval = BodyNoval.objects.all()
@@ -145,7 +274,7 @@ def ranking_list(request):
     yue7 = quan[5:15]
     ri7 = quan[11:21]
 
-    dict = {
+    dict1 = {
         'zong': zong, 'zhou': zhou, 'yue': yue, 'ri': ri,
         'zong1': zong1, 'zhou1': zhou1, 'yue1': yue1, 'ri1': ri1,
         'zong2': zong2, 'zhou2': zhou2, 'yue2': yue2, 'ri2': ri2,
@@ -155,7 +284,24 @@ def ranking_list(request):
         'zong6': zong6, 'zhou6': zhou6, 'yue6': yue6, 'ri6': ri6,
         'zong7': zong7, 'zhou7': zhou7, 'yue7': yue7, 'ri7': ri7,
     }
+    if request.session.has_key('userNumber'):   #判断当前是否有账号信息
+        user_name = request.session['user_name']
+        dict2 = {
+            'user_name':user_name,
+            'zong': zong, 'zhou': zhou, 'yue': yue, 'ri': ri,
+            'zong1': zong1, 'zhou1': zhou1, 'yue1': yue1, 'ri1': ri1,
+            'zong2': zong2, 'zhou2': zhou2, 'yue2': yue2, 'ri2': ri2,
+            'zong3': zong3, 'zhou3': zhou3, 'yue3': yue3, 'ri3': ri3,
+            'zong4': zong4, 'zhou4': zhou4, 'yue4': yue4, 'ri4': ri4,
+            'zong5': zong5, 'zhou5': zhou5, 'yue5': yue5, 'ri5': ri5,
+            'zong6': zong6, 'zhou6': zhou6, 'yue6': yue6, 'ri6': ri6,
+            'zong7': zong7, 'zhou7': zhou7, 'yue7': yue7, 'ri7': ri7,
+        }
+        return render(request, 'ranking_list.html',dict2)
+    else:
+        return render(request, 'ranking_list.html', dict1)
 
+def classify(request):
     return render(request, 'ranking_list.html',dict)
 
 #分类页面

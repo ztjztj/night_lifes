@@ -4,10 +4,9 @@
     <div class="box_con">
         <div class="con_top">
             <div id="bdshare" class="bdshare_b" style="line-height: 12px;"><img
-                    src="{% static '章节信息页面_files/type-button-7.jpg' %}" alt="加载失败"><a class="shareCount" title="累计分享0次">0</a>
-            </div>
-            <a href="http://www.xbiquge.la/">新笔趣阁</a> &gt; <a href="http://www.xbiquge.la/fenlei/2_1.html">修真小说</a> &gt;
-            三寸人间最新章节目录
+                    src="{% static 'bqg_files/type-button-7.jpg' %}" alt="加载失败"><a class="shareCount" title="累计分享0次">0</a></div>
+            <a href="http://127.0.0.1:8000/">新笔趣阁</a> &gt; <a href="{% url 'classify' %}">{{ chapter_info.book_category}}</a> &gt;
+            最新章节目录
         </div>
         <div id="maininfo">
             <div id="info">
@@ -32,12 +31,12 @@
                     class="b"></span></div>
         </div>
     </div>
-    <div class="box_con">
+        <div class="box_con">
         <div id="list">
             <dl>
                 {% for chapter in chapter_list %}
 
-                    <dd><a href="">{{ chapter.chapter_name }}</a></dd>
+                    <dd><a href="/article/?id={{ book_id }}&book_category={{ chapter_info.book_category}}&book_name={{ chapter_info.book_name }}&chapter={{ chapter.chapter_id }}">{{ chapter.chapter_name }}</a></dd>
 
                 {% endfor %}
 
