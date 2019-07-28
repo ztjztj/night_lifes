@@ -47,7 +47,7 @@ def index(request):
 
 
 
-def register(request):
+def register(request):        #注册
     if request.method=='GET':
         return render(request,'register.html')
     else:
@@ -126,7 +126,7 @@ def verify(request):
         return JsonResponse({'verify':'请输入正确内容','error_types':error_type})
 
 
-def bookrack(request):
+def bookrack(request):   #书架
 
     if request.session.has_key('userNumber'):
         user_name =request.session['user_name']
@@ -151,8 +151,12 @@ def chapter(request):
     chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id')
     chapter_list = chapter_list[0:102]
 
-    return render(request, 'chapter.html', {'chapter_info': chapter_info, 'chapter_list': chapter_list,'page':1,'book_id':book_id})
-
+    if request.session.has_key('userNumber'):
+        user_name =request.session['user_name']
+        return render(request, 'chapter.html', {'chapter_info': chapter_info, 'chapter_list': chapter_list,'page':1,'book_id':book_id,'user_name':user_name})
+    else:
+        return render(request, 'chapter.html',
+                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id})
 
 
 # 使用ajax跳转章节分页
@@ -172,7 +176,7 @@ def chapter_ajax(request):
     book_id = request_list.get('id')
     page = request_list.get('page')
 
-    chapter_info = models.BodyNoval.objects.filter(id = book_id)[0]
+    chapter_info = models.BodyNoval.objects.filter(id =book_id)[0]
     chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id').values()
     chapter_list = chapter_list[(int(page)-1)*102:int(page)*102].values()
     chapter_list = list(chapter_list)
@@ -181,7 +185,7 @@ def chapter_ajax(request):
     return JsonResponse(info)
 
 
-def article(request):
+def article(request):   #文章内容
     book_id = request.GET.get('id')
     chapter = request.GET.get('chapter')
     book = models.BodyNoval.objects.get(id=book_id)
@@ -191,12 +195,14 @@ def article(request):
         info['book_content'] = str(info['book_content']).replace('\r', '')
     except IndexError:
         info = {'book_section':'暂无此章内容'}
-
-    return render(request, 'article.html', {"info": info,'book_id':book_id})
-
+    if request.session.has_key('userNumber'):
+        user_name =request.session['user_name']
+        return render(request, 'article.html', {"info": info,'book_id':book_id,'user_name':user_name})
+    else:
+        return render(request, 'article.html', {"info": info, 'book_id': book_id})
 
 @csrf_exempt
-def article_ajax(request):
+def article_ajax(request):     #文章内容ajax
     paramter = request.POST
     book = paramter.get('book')
     chapter = paramter.get('chapter')
@@ -205,7 +211,7 @@ def article_ajax(request):
     info['book_content'] = str(info['book_content']).replace('\r','')
     return JsonResponse(info)
 
-def ranking_list(request):
+def ranking_list(request):    #排行榜
 
     # 获取所有书的信息
     noval = BodyNoval.objects.all()
@@ -266,7 +272,7 @@ def ranking_list(request):
     yue7 = quan[5:15]
     ri7 = quan[:10]
 
-    dict = {
+    dict1 = {
         'zong': zong, 'zhou': zhou, 'yue': yue, 'ri': ri,
         'zong1': zong1, 'zhou1': zhou1, 'yue1': yue1, 'ri1': ri1,
         'zong2': zong2, 'zhou2': zhou2, 'yue2': yue2, 'ri2': ri2,
@@ -276,8 +282,23 @@ def ranking_list(request):
         'zong6': zong6, 'zhou6': zhou6, 'yue6': yue6, 'ri6': ri6,
         'zong7': zong7, 'zhou7': zhou7, 'yue7': yue7, 'ri7': ri7,
     }
+    if request.session.has_key('userNumber'):   #判断当前是否有账号信息
+        user_name = request.session['user_name']
+        dict2 = {
+            'user_name':user_name,
+            'zong': zong, 'zhou': zhou, 'yue': yue, 'ri': ri,
+            'zong1': zong1, 'zhou1': zhou1, 'yue1': yue1, 'ri1': ri1,
+            'zong2': zong2, 'zhou2': zhou2, 'yue2': yue2, 'ri2': ri2,
+            'zong3': zong3, 'zhou3': zhou3, 'yue3': yue3, 'ri3': ri3,
+            'zong4': zong4, 'zhou4': zhou4, 'yue4': yue4, 'ri4': ri4,
+            'zong5': zong5, 'zhou5': zhou5, 'yue5': yue5, 'ri5': ri5,
+            'zong6': zong6, 'zhou6': zhou6, 'yue6': yue6, 'ri6': ri6,
+            'zong7': zong7, 'zhou7': zhou7, 'yue7': yue7, 'ri7': ri7,
+        }
+        return render(request, 'ranking_list.html',dict2)
+    else:
+        return render(request, 'ranking_list.html', dict1)
 
-    return render(request, 'ranking_list.html',dict)
 def classify(request):
 
     return render(request, 'classify.html')
