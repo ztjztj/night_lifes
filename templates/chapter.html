@@ -36,7 +36,7 @@
             <dl>
                 {% for chapter in chapter_list %}
 
-                    <dd><a href="/article/?id={{ book_id }}&chapter={{ chapter.chapter_id }}">{{ chapter.chapter_name }}</a></dd>
+                    <dd><a href="/article/?id={{ book_id }}&book_category={{ chapter_info.book_category}}&book_name={{ chapter_info.book_name }}&chapter={{ chapter.chapter_id }}">{{ chapter.chapter_name }}</a></dd>
 
                 {% endfor %}
 

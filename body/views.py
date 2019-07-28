@@ -189,6 +189,8 @@ def article(request):   #文章内容
     book_id = request.GET.get('id')
     chapter = request.GET.get('chapter')
     book = models.BodyNoval.objects.get(id=book_id)
+    book_category =request.GET.get('book_category')
+    book_name=request.GET.get('book_name')
     info = models.Noval_room.objects.filter(book_foreign=book.book_url,book_chapter_id=chapter).values()
     try:
         info = list(info)[0]
@@ -197,9 +199,9 @@ def article(request):   #文章内容
         info = {'book_section':'暂无此章内容'}
     if request.session.has_key('userNumber'):
         user_name =request.session['user_name']
-        return render(request, 'article.html', {"info": info,'book_id':book_id,'user_name':user_name})
+        return render(request, 'article.html', {"info": info,'book_id':book_id,'book_category':book_category,'book_name':book_name,'user_name':user_name})
     else:
-        return render(request, 'article.html', {"info": info, 'book_id': book_id})
+        return render(request, 'article.html', {"info": info,'book_category':book_category,'book_name':book_name,'book_id': book_id})
 
 @csrf_exempt
 def article_ajax(request):     #文章内容ajax
