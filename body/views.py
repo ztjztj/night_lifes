@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,redirect
+from django.shortcuts import render,HttpResponse
 from .models import *
 from .import models
 from django.http import JsonResponse
@@ -233,6 +233,8 @@ def article(request):   #文章内容
     book_id = request.GET.get('id')
     chapter = request.GET.get('chapter')
     book = models.BodyNoval.objects.get(id=book_id)
+    book_category =request.GET.get('book_category')
+    book_name=request.GET.get('book_name')
     info = models.Noval_room.objects.filter(book_foreign=book.book_url,book_chapter_id=chapter).values()
     try:
         info = list(info)[0]
@@ -241,9 +243,9 @@ def article(request):   #文章内容
         info = {'book_section':'暂无此章内容'}
     if request.session.has_key('userNumber'):
         user_name =request.session['user_name']
-        return render(request, 'article.html', {"info": info,'book_id':book_id,'user_name':user_name})
+        return render(request, 'article.html', {"info": info,'book_id':book_id,'book_category':book_category,'book_name':book_name,'user_name':user_name})
     else:
-        return render(request, 'article.html', {"info": info, 'book_id': book_id})
+        return render(request, 'article.html', {"info": info,'book_category':book_category,'book_name':book_name,'book_id': book_id})
 
 @csrf_exempt
 def article_ajax(request):     #文章内容ajax
@@ -265,56 +267,56 @@ def ranking_list(request):    #排行榜
     zong = xuanhuan[:10]
     zhou = xuanhuan[2:12]
     yue = xuanhuan[5:15]
-    ri = xuanhuan[:10]
+    ri = xuanhuan[11:21]
 
     # 修真
     xiuzhen = noval.filter(book_category='修真小说').order_by('-book_xiao')
     zong1 = xiuzhen[:10]
     zhou1 = xiuzhen[2:12]
     yue1 = xiuzhen[5:15]
-    ri1 = xiuzhen[:10]
+    ri1 = xiuzhen[11:21]
 
     # 都市
     dushi = noval.filter(book_category='修真小说').order_by('-book_xiao')
     zong2 = dushi[:10]
     zhou2 = dushi[2:12]
     yue2 = dushi[5:15]
-    ri2 = dushi[:10]
+    ri2 = dushi[11:21]
 
     # 穿越
     chuanyue = noval.filter(book_category='穿越小说').order_by('-book_xiao')
     zong3 = chuanyue[:10]
     zhou3 = chuanyue[2:12]
     yue3 = chuanyue[5:15]
-    ri3 = chuanyue[:10]
+    ri3 = chuanyue[11:21]
 
     # 网游竞技
     wangyou = noval.filter(book_category='网游小说').order_by('-book_xiao')
     zong4 = wangyou[:10]
     zhou4 = wangyou[2:12]
     yue4 = wangyou[5:15]
-    ri4 = wangyou[:10]
+    ri4 = wangyou[11:21]
 
     # 科幻灵异
     kehuan = noval.filter(book_category='科幻小说').order_by('-book_xiao')
     zong5 = kehuan[:10]
     zhou5 = kehuan[2:12]
     yue5 = kehuan[5:15]
-    ri5 = kehuan[:10]
+    ri5 = kehuan[11:21]
 
     # 完本小说
     wanben = noval.filter(book_state='完本').order_by('-book_xiao')
     zong6 = wanben[:10]
     zhou6 = wanben[2:12]
     yue6 = wanben[5:15]
-    ri6 = wanben[:10]
+    ri6 = wanben[11:21]
 
     # 全部小说
     quan = noval.order_by('-book_xiao')
     zong7 = quan[:10]
     zhou7 = quan[2:12]
     yue7 = quan[5:15]
-    ri7 = quan[:10]
+    ri7 = quan[11:21]
 
     dict1 = {
         'zong': zong, 'zhou': zhou, 'yue': yue, 'ri': ri,
@@ -343,9 +345,19 @@ def ranking_list(request):    #排行榜
     else:
         return render(request, 'ranking_list.html', dict1)
 
-def classify(request):
+#分类页面
+def classify(request,classify):
 
-    return render(request, 'classify.html')
+    #查找所有类别的小说
+    noval = BodyNoval.objects.filter(book_category=classify)
+    # 展示图片的6个小说
+    zhans = noval[:6]
+    # 展示最近更新的小说
+    updata = noval.order_by('book_update')[0:30]
+    # 好看的玄幻小说
+    hao = noval.order_by('-id')[0:30]
+    return render(request,'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
+
 
 def all_book(request):
 

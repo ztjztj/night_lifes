@@ -88,8 +88,8 @@
                              value="">&nbsp;夜间<input type="checkbox" name="night" id="night"
                                                      onchange="javascript:setNight();" value=""></div>
 
-                <a href="http://www.xbiquge.la/">新笔趣阁</a> &gt; <a href="http://www.xbiquge.la/fenlei/2_1.html">修真小说</a>
-                &gt; <a href="http://www.xbiquge.la/10/10489/">三寸人间</a> &gt; 正文卷 第一章 我要减肥！
+                <a href={% url 'index' %}>新笔趣阁</a> &gt; <a href={% url 'classify' %}>{{ book_category }}</a>
+                &gt; <a href={% url 'article' %}>{{ book_name }}</a> &gt;
             </div>
             <div class="bookname">
                 <h1 id="chapter_name">{{ info.book_section }}</h1>
