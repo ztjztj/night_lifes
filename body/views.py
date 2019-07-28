@@ -303,7 +303,7 @@ def ranking_list(request):    #排行榜
 
 #分类页面
 def classify(request,classify):
-    # print(classify)
+
     #查找所有类别的小说
     noval = BodyNoval.objects.filter(book_category=classify)
     # 展示图片的6个小说
