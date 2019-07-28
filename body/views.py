@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse,redirect
+from django.shortcuts import render,HttpResponse
 from .models import *
 from .import models
 from django.http import JsonResponse
@@ -14,11 +14,55 @@ def exit(request):
 @csrf_exempt     #ajax的csrf验证
 def index(request):
     if request.method =='GET':
+        # 首页图书信息传参
+        books = BodyNoval.objects.all()
+
+
+        # 【首页4个小说】
+        book = books.filter(book_category='玄幻小说')[:4]
+        # 上期强推
+        qiangtui = books.values()[:6]
+        # 【小说分类信息】
+        # 玄幻小说
+        xuanhuan_book = books.filter(book_category='玄幻小说').order_by('book_xiao')[1:13]
+        # 玄幻小说图片
+        xuanhuan_img = books.filter(book_category='玄幻小说').order_by('book_xiao')[0]
+        # 修真小说
+        xiuzhen_book = books.filter(book_category='修真小说').order_by('book_xiao')[1:13]
+        # 修真小说图片
+        xiuzhen_img = books.filter(book_category='修真小说').order_by('book_xiao')[0]
+        # 都市小说
+        dushi_book = books.filter(book_category='都市小说').order_by('book_xiao')[1:13]
+        # 都市小说图片
+        dushi_img = books.filter(book_category='都市小说').order_by('book_xiao')[0]
+        # 穿越小说
+        chuanyue_book = books.filter(book_category='穿越小说').order_by('book_xiao')[1:13]
+        # 穿越小说图片
+        chuanyue_img =books.filter(book_category='穿越小说').order_by('book_xiao')[0]
+        # 网游小说
+        wangyou_book = books.filter(book_category='网游小说').order_by('book_xiao')[1:13]
+        # 网游小说图片
+        wangyou_img = books.filter(book_category='网游小说').order_by('book_xiao')[0]
+        # 科幻小说
+        kehuan_book = books.filter(book_category='科幻小说').order_by('book_xiao')[1:13]
+        # 科幻小说图片
+        kehuan_img = books.filter(book_category='科幻小说').order_by('book_xiao')[0]
+
+        # 【最新更新小说列表】
+        new_update = books.values().order_by('-book_update')[:33]
+
+        # 【最新入库小说】
+        new_storage = books.values().order_by('-book_update')[:33]
+
+
+
         if request.session.has_key('userNumber'):
             user_name =request.session['user_name']
-            return render(request,'index.html',{'user_name':user_name})
+
+            return render(request,'index.html',{'user_name':user_name,'book':book,'xuanhuan_book':xuanhuan_book,'xuanhuan_img':xuanhuan_img,"xiuzhen_book":xiuzhen_book,"xiuzhen_img":xiuzhen_img,"dushi_book":dushi_book,"dushi_img":dushi_img,"chuanyue_book":chuanyue_book,"chuanyue_img":chuanyue_img,"wangyou_book":wangyou_book,"wangyou_img":wangyou_img,"kehuan_book":kehuan_book,"kehuan_img":kehuan_img,"qiangtui":qiangtui,"new_update":new_update,"new_storage":new_storage})
         else:
-            return render(request,'index.html')
+            return render(request,'index.html',{'book':book,'xuanhuan_book':xuanhuan_book,'xuanhuan_img':xuanhuan_img,"xiuzhen_book":xiuzhen_book,"xiuzhen_img":xiuzhen_img,"dushi_book":dushi_book,"dushi_img":dushi_img,"chuanyue_book":chuanyue_book,"chuanyue_img":chuanyue_img,"wangyou_book":wangyou_book,"wangyou_img":wangyou_img,"kehuan_book":kehuan_book,"kehuan_img":kehuan_img,"qiangtui":qiangtui,"new_update":new_update,"new_storage":new_storage})
+
 
     else:
         userNumber = request.POST.get('userNumber')
@@ -225,56 +269,56 @@ def ranking_list(request):    #排行榜
     zong = xuanhuan[:10]
     zhou = xuanhuan[2:12]
     yue = xuanhuan[5:15]
-    ri = xuanhuan[:10]
+    ri = xuanhuan[11:21]
 
     # 修真
     xiuzhen = noval.filter(book_category='修真小说').order_by('-book_xiao')
     zong1 = xiuzhen[:10]
     zhou1 = xiuzhen[2:12]
     yue1 = xiuzhen[5:15]
-    ri1 = xiuzhen[:10]
+    ri1 = xiuzhen[11:21]
 
     # 都市
     dushi = noval.filter(book_category='修真小说').order_by('-book_xiao')
     zong2 = dushi[:10]
     zhou2 = dushi[2:12]
     yue2 = dushi[5:15]
-    ri2 = dushi[:10]
+    ri2 = dushi[11:21]
 
     # 穿越
     chuanyue = noval.filter(book_category='穿越小说').order_by('-book_xiao')
     zong3 = chuanyue[:10]
     zhou3 = chuanyue[2:12]
     yue3 = chuanyue[5:15]
-    ri3 = chuanyue[:10]
+    ri3 = chuanyue[11:21]
 
     # 网游竞技
     wangyou = noval.filter(book_category='网游小说').order_by('-book_xiao')
     zong4 = wangyou[:10]
     zhou4 = wangyou[2:12]
     yue4 = wangyou[5:15]
-    ri4 = wangyou[:10]
+    ri4 = wangyou[11:21]
 
     # 科幻灵异
     kehuan = noval.filter(book_category='科幻小说').order_by('-book_xiao')
     zong5 = kehuan[:10]
     zhou5 = kehuan[2:12]
     yue5 = kehuan[5:15]
-    ri5 = kehuan[:10]
+    ri5 = kehuan[11:21]
 
     # 完本小说
     wanben = noval.filter(book_state='完本').order_by('-book_xiao')
     zong6 = wanben[:10]
     zhou6 = wanben[2:12]
     yue6 = wanben[5:15]
-    ri6 = wanben[:10]
+    ri6 = wanben[11:21]
 
     # 全部小说
     quan = noval.order_by('-book_xiao')
     zong7 = quan[:10]
     zhou7 = quan[2:12]
     yue7 = quan[5:15]
-    ri7 = quan[:10]
+    ri7 = quan[11:21]
 
     dict1 = {
         'zong': zong, 'zhou': zhou, 'yue': yue, 'ri': ri,
@@ -303,9 +347,19 @@ def ranking_list(request):    #排行榜
     else:
         return render(request, 'ranking_list.html', dict1)
 
-def classify(request):
+#分类页面
+def classify(request,classify):
 
-    return render(request, 'classify.html')
+    #查找所有类别的小说
+    noval = BodyNoval.objects.filter(book_category=classify)
+    # 展示图片的6个小说
+    zhans = noval[:6]
+    # 展示最近更新的小说
+    updata = noval.order_by('book_update')[0:30]
+    # 好看的玄幻小说
+    hao = noval.order_by('-id')[0:30]
+    return render(request,'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
+
 
 def all_book(request):
 
