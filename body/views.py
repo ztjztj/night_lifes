@@ -14,11 +14,55 @@ def exit(request):
 @csrf_exempt     #ajax的csrf验证
 def index(request):
     if request.method =='GET':
+        # 首页图书信息传参
+        books = BodyNoval.objects.all()
+
+
+        # 【首页4个小说】
+        book = books.filter(book_category='玄幻小说')[:4]
+        # 上期强推
+        qiangtui = books.values()[:6]
+        # 【小说分类信息】
+        # 玄幻小说
+        xuanhuan_book = books.filter(book_category='玄幻小说').order_by('book_xiao')[1:13]
+        # 玄幻小说图片
+        xuanhuan_img = books.filter(book_category='玄幻小说').order_by('book_xiao')[0]
+        # 修真小说
+        xiuzhen_book = books.filter(book_category='修真小说').order_by('book_xiao')[1:13]
+        # 修真小说图片
+        xiuzhen_img = books.filter(book_category='修真小说').order_by('book_xiao')[0]
+        # 都市小说
+        dushi_book = books.filter(book_category='都市小说').order_by('book_xiao')[1:13]
+        # 都市小说图片
+        dushi_img = books.filter(book_category='都市小说').order_by('book_xiao')[0]
+        # 穿越小说
+        chuanyue_book = books.filter(book_category='穿越小说').order_by('book_xiao')[1:13]
+        # 穿越小说图片
+        chuanyue_img =books.filter(book_category='穿越小说').order_by('book_xiao')[0]
+        # 网游小说
+        wangyou_book = books.filter(book_category='网游小说').order_by('book_xiao')[1:13]
+        # 网游小说图片
+        wangyou_img = books.filter(book_category='网游小说').order_by('book_xiao')[0]
+        # 科幻小说
+        kehuan_book = books.filter(book_category='科幻小说').order_by('book_xiao')[1:13]
+        # 科幻小说图片
+        kehuan_img = books.filter(book_category='科幻小说').order_by('book_xiao')[0]
+
+        # 【最新更新小说列表】
+        new_update = books.values().order_by('-book_update')[:33]
+
+        # 【最新入库小说】
+        new_storage = books.values().order_by('-book_update')[:33]
+
+
+
         if request.session.has_key('userNumber'):
             user_name =request.session['user_name']
-            return render(request,'index.html',{'user_name':user_name})
+
+            return render(request,'index.html',{'user_name':user_name,'book':book,'xuanhuan_book':xuanhuan_book,'xuanhuan_img':xuanhuan_img,"xiuzhen_book":xiuzhen_book,"xiuzhen_img":xiuzhen_img,"dushi_book":dushi_book,"dushi_img":dushi_img,"chuanyue_book":chuanyue_book,"chuanyue_img":chuanyue_img,"wangyou_book":wangyou_book,"wangyou_img":wangyou_img,"kehuan_book":kehuan_book,"kehuan_img":kehuan_img,"qiangtui":qiangtui,"new_update":new_update,"new_storage":new_storage})
         else:
-            return render(request,'index.html')
+            return render(request,'index.html',{'book':book,'xuanhuan_book':xuanhuan_book,'xuanhuan_img':xuanhuan_img,"xiuzhen_book":xiuzhen_book,"xiuzhen_img":xiuzhen_img,"dushi_book":dushi_book,"dushi_img":dushi_img,"chuanyue_book":chuanyue_book,"chuanyue_img":chuanyue_img,"wangyou_book":wangyou_book,"wangyou_img":wangyou_img,"kehuan_book":kehuan_book,"kehuan_img":kehuan_img,"qiangtui":qiangtui,"new_update":new_update,"new_storage":new_storage})
+
 
     else:
         userNumber = request.POST.get('userNumber')
@@ -124,6 +168,7 @@ def verify(request):
                 return JsonResponse({'verify':'该邮箱已被使用','error_types':error_type})
     else:
         return JsonResponse({'verify':'请输入正确内容','error_types':error_type})
+        # return render(request,'error.html')
 
 
 def bookrack(request):   #书架
@@ -197,6 +242,7 @@ def article(request):   #文章内容
         info['book_content'] = str(info['book_content']).replace('\r', '')
     except IndexError:
         info = {'book_section':'暂无此章内容'}
+        return render(request,'error.html',info)
     if request.session.has_key('userNumber'):
         user_name =request.session['user_name']
         return render(request, 'article.html', {"info": info,'book_id':book_id,'book_category':book_category,'book_name':book_name,'user_name':user_name})
