@@ -65,23 +65,27 @@
                 <tbody>
                 <tr align="center">
                     <th width="21%">文章名称</th>
-                    <th width="30%">最新章节</th>
-                    <th width="30%">书签</th>
-                    <th width="7%">更新</th>
+{#                    <th width="30%">最新章节</th>#}
+                    <th width="30%">小说网址</th>
+{#                    <th width="30%">书签</th>#}
+                    <th width="30%">小说详情</th>
+{#                    <th width="7%">更新</th>#}
+                    <th width="7%">更新时间</th>
                     <th width="7%">操作</th>
                 </tr>
-                <tr>
-                    <td class="even"><a href="http://www.xbiquge.la/15/15409/" target="_blank">牧神记</a></td>
-                    <td class="odd"><a href="http://www.xbiquge.la/15/15409/18397256.html" target="_blank">第一七一五章
-                        入棺沉河</a>
+                {% for foo in novel_all_object %}
+                    <tr>
+                        <td class="even" style="text-align: center"><a href="/chapter/?id={{ foo.Noval_foregin.id }}" target="_blank">{{ foo.Noval_foregin.book_name }}</a></td>
+                        <td class="odd" style="text-align: center"><a href="#" target="_blank">{{ foo.Noval_foregin.book_url }}</a>
 
-                    </td>
-                    <td class="even">无书签</td>
-                    <td class="odd" align="center">07-05</td>
-                    <td class="even" align="center"><a
-                            href="">移除</a>
-                    </td>
-                </tr>
+                        </td>
+                        <td class="even">{{ foo.Noval_foregin.book_intro }}</td>
+                        <td class="odd" align="center">{{ foo.book_add }}</td>
+                        <td class="even" align="center"><a
+                                href="">移除</a>
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>

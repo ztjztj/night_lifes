@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-def exit(request):
+def exit(request):      #退出登录
     request.session.flush()
     return redirect(index)
 
@@ -14,6 +14,7 @@ def exit(request):
 @csrf_exempt     #ajax的csrf验证
 def index(request):
     if request.method =='GET':
+
         if request.session.has_key('userNumber'):
             user_name =request.session['user_name']
             return render(request,'index.html',{'user_name':user_name})
@@ -73,7 +74,7 @@ def register(request):        #注册
         return render(request, 'index.html')
 
 
-def verify(request):
+def verify(request):    #注册验证
     type = request.POST.get('type')
     data=request.POST.get('data')
     error_type = request.POST.get('error_type')
@@ -130,9 +131,48 @@ def bookrack(request):   #书架
 
     if request.session.has_key('userNumber'):
         user_name =request.session['user_name']
-        return render(request,'bookrack.html',{'user_name':user_name})
+        user_object = models.BodyUser.objects.get(user_name=user_name)  #获取当前账户的对象
+        user_id = user_object.id   #获取当前账号的id
+        novel_all_object = models.bookrack.objects.filter(user_foregin=user_id).select_related('Noval_foregin')  #获取用户id值为当前用户id值的所有对象
+        print(novel_all_object)
+        for i in novel_all_object:
+            print(i.Noval_foregin.book_url)
+        # bookrack_object = models.bookrack.objects.get(user_foregin=user_id)   #从书架表中通过当前账号的id获取当前对象
+        # book_id =bookrack_object.Noval_foregin    #获取当前书的id值
+        return render(request,'bookrack.html',{'user_name':user_name,'user_id':user_id,'novel_all_object':novel_all_object})
     else:
         return render(request,'bookrack.html')
+
+def add_bookrack_ajax(request):
+    if request.session.has_key('userNumber'):
+        user_name =request.session['user_name']   #获取当前用户名
+        book_id = request.POST.get('book_id')     #获取当前书籍的id
+        book_object = BodyNoval.objects.get(id=book_id)  # 获取当前书的对象
+
+        user_object = BodyUser.objects.get(user_name=user_name) #获取当前用户的对象
+        user_id = user_object.id                            #获取当前用户的id
+
+        # book_object = models.BodyNoval.objects.get(id=book_id)  #获取书名
+        # new_update =book_object.book_update      #获取小说最近的更新时间
+        # book_url = book_object.book_url    #获取文章表中的文章的url
+        # chapter_object =models.ChapterUrls.objects.filter(book_url=book_url).order_by('-chapter_id')[0]   #从章节表中查找url跟图书url一样的所有章节，然后排序取第一个
+        # new_chapter=chapter_object.chapter_name    #排完序后取他的最新章节名称
+        # print(user_name,book_id,new_update,book_url,new_chapter)
+        print(user_id,book_id)
+        bookrack_object = models.bookrack()      #获得书架模型
+
+        bookrack_object.user_foregin_id =user_id    #往书架表中添加账号的id
+        bookrack_object.Noval_foregin_id=book_id    #往书架表中添加书籍的id
+        # bookrack_object.user_foregin = user_object
+        # bookrack_object.Noval_foregin =book_object
+        bookrack_object.save()
+        # book_id = bookrack_object
+
+        return JsonResponse({'verify':'收藏成功'})
+    else:
+        return JsonResponse({'verify':'加入失败，当前账号未登录'})
+
+
 
 
 # 章节信息
@@ -147,8 +187,8 @@ def chapter(request):
     book_id = request_list.get('id')
 
 
-    chapter_info = models.BodyNoval.objects.filter(id=int(book_id))[0]
-    chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id')
+    chapter_info = models.BodyNoval.objects.filter(id=int(book_id))[0]  #获取当前书的id值
+    chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id')       #获取当前书的所有章节并排序
     chapter_list = chapter_list[0:102]
 
     if request.session.has_key('userNumber'):
@@ -312,3 +352,4 @@ def all_book(request):
 def retrieve_password(request):
 
     return render(request, 'retrieve_password.html')
+

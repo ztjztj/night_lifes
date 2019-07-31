@@ -15,5 +15,7 @@ urlpatterns = [
     path('retrieve_password/',views.retrieve_password,name="retrieve_password"),
     path('article_ajax/',views.article_ajax,name="article_ajax"),
     path('verify/',views.verify,name='verify'),    #验证
+    path('add_bookrack_ajax/',views.add_bookrack_ajax,name='add_bookrack_ajax'), #添加书架ajax
+
 
 ]
