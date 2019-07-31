@@ -2,229 +2,40 @@
 {% load staticfiles %}
 
 {% block body %}
+
+    <script language="javascript" type="text/javascript">
+
+    </script>
+
+
 <div id="main">
         <div id="content">
             <div id="hotcontent">
                 <div class="ll">
-
-                    <div class="item">
-                        <div class="image"><a href="http://www.xbiquge.la/15/15409/"><img
-                                src="{% static 'bqg_files/15409s.jpg' %}" alt="牧神记" width="120" height="150"></a></div>
-                        <dl>
-                            <dt><span>宅猪</span><a href="http://www.xbiquge.la/15/15409/">牧神记</a></dt>
-                            <dd> 大墟的祖训说，天黑，别出门。大墟残老村的老弱病残们从江边捡到了一个婴儿，取名秦牧，含辛茹苦将他养大。 这一天夜幕降临，黑暗笼罩大墟，秦牧走出了家门……做个春...</dd>
-                        </dl>
-                        <div class="clear"></div>
-                    </div>
-
-                    <div class="item">
-                        <div class="image"><a href="http://www.xbiquge.la/14/14997/"><img
-                                src="{% static 'bqg_files/14997s.jpg' %}" alt="太古龙象诀" width="120" height="150"></a></div>
-                        <dl>
-                            <dt><span>旺仔老馒头</span><a href="http://www.xbiquge.la/14/14997/">太古龙象诀</a></dt>
-                            <dd> 一滴血压塌万古，一叶草斩碎苍穹。曾经最为强大的太古禁忌神术太古龙象诀失传亿万年。无尽岁月后，落魄少年林枫偶得太古第一禁忌神术太古龙象诀。当林枫从世界最北部一个偏远...
-                            </dd>
-                        </dl>
-                        <div class="clear"></div>
-                    </div>
-
-                    <div class="item">
-                        <div class="image"><a href="http://www.xbiquge.la/14/14930/"><img
-                                src="{% static '分类页面展示_files/14930s.jpg' %}" alt="元尊" width="120" height="150"></a></div>
-                        <dl>
-                            <dt><span>天蚕土豆</span><a href="http://www.xbiquge.la/14/14930/">元尊</a></dt>
-                            <dd> 吾有一口玄黄气，可吞天地日月星。天蚕土豆最新鼎力大作，2017年度必看玄幻小说。
-                            </dd>
-                        </dl>
-                        <div class="clear"></div>
-                    </div>
-
-                    <div class="item">
-                        <div class="image"><a href="http://www.xbiquge.la/10/10512/"><img
-                                src="{% static '分类页面展示_files/10512s.jpg' %}" alt="人皇纪" width="120" height="150"></a></div>
-                        <dl>
-                            <dt><span>皇甫奇</span><a href="http://www.xbiquge.la/10/10512/">人皇纪</a></dt>
-                            <dd> javascript:share({content:'　　我不能把这个世界，让给我所鄙视的人！ 所以，王冲踩着枯骨血海，踏上人皇宝座，挽狂澜于既倒...</dd>
-                        </dl>
-                        <div class="clear"></div>
-                    </div>
-
-                    <div class="item">
-                        <div class="image"><a href="http://www.xbiquge.la/0/951/"><img src="{% static '分类页面展示_files/951s.jpg' %}"
-                                                                                       alt="伏天氏" width="120"
-                                                                                       height="150"></a></div>
-                        <dl>
-                            <dt><span>净无痕</span><a href="http://www.xbiquge.la/0/951/">伏天氏</a></dt>
-                            <dd> 东方神州，有人皇立道统，有圣贤宗门传道，有诸侯雄踞一方王国，诸强林立，神州动乱千万载，执此之时，一代天骄叶青帝及东凰大帝横空出世，斩人皇，驭圣贤，诸侯臣服，东方神...
-                            </dd>
-                        </dl>
-                        <div class="clear"></div>
-                    </div>
-
-                    <div class="item">
-                        <div class="image"><a href="http://www.xbiquge.la/2/2210/"><img src="{% static '分类页面展示_files/2210s.jpg' %}"
-                                                                                        alt="全职法师" width="120"
-                                                                                        height="150"></a></div>
-                        <dl>
-                            <dt><span>乱</span><a href="http://www.xbiquge.la/2/2210/">全职法师</a></dt>
-                            <dd>一觉醒来，世界大变。
-                                熟悉的高中传授的是魔法，告诉大家要成为一名出色的魔法师。
-                                居住的都市之外游荡着袭击人类的魔物妖兽，虎视眈眈。
-                                崇尚科学的世界变成了崇尚魔法，偏...
-                            </dd>
-                        </dl>
-                        <div class="clear"></div>
-                    </div>
-
+                {# 各种分类的展示图片的小说 #}
+                    {% for zhan in zhans %}
+                        <div class="item">
+                            <div class="image"><a href=" /chapter/?id={{ zhan.id }}"><img src="{{ zhan.book_img }}" alt="{{ zhan.book_name }}" width="120" height="150"></a>
+                            </div>
+                            <dl>
+                                <dt><span>{{ zhan.book_author }}</span><a href="/chapter/?id={{ zhan.id }}">{{ zhan.book_name }}</a></dt>
+                                <dd> {{ zhan.book_intro }}</dd>
+                            </dl>
+                            <div class="clear"></div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
 
             <div id="newscontent">
                 <div class="l">
-                    <h2>好看的玄幻小说最近更新列表</h2>
+                {# 各种更新的好看小说 #}
+                    <h2>好看的{{classify }}最近更新列表</h2>
                     <ul>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/31/31021/" target="_blank">神级基地</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/31/31021/18403803.html" target="_blank">第六百四十五章 逃亡（为冰石ice兄弟的万赏加更）</a>(07-06)</span><span
-                                class="s5">资产暴增</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/39/39582/"
-                                                 target="_blank">诸天最强大咖</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/39/39582/18403802.html" target="_blank">第二百五十二章 太阴山右君</a>(07-06)</span><span
-                                class="s5">两仪之主</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/38/38831/" target="_blank">星灵仙尊</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/38/38831/18403797.html" target="_blank">第83章 碰瓷</a>(07-06)</span><span
-                                class="s5">顾若飞</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/34/34401/"
-                                                 target="_blank">仙医小神农</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/34/34401/18403793.html" target="_blank">第794章差得太远了</a>(07-06)</span><span
-                                class="s5">鱼它爸</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/38/38664/"
-                                                 target="_blank">学渣称霸当鬼王</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/38/38664/18403782.html" target="_blank">第二卷 多情人与多情鬼 第五十二章 练剑与修剑</a>(07-06)</span><span
-                                class="s5">炖酒</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/36/36306/"
-                                                 target="_blank">她有一间时空小屋</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/36/36306/18403777.html" target="_blank">第三百〇九章 归程</a>(07-06)</span><span
-                                class="s5">蜀椒</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/34/34455/"
-                                                 target="_blank">轮回之仙帝归来</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/34/34455/18403776.html"
-                                target="_blank">第五百七十四章 连环计【五更求推荐】</a>(07-06)</span><span class="s5">橘猫爱吃鱼</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/39/39919/"
-                                                 target="_blank">旨</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/39/39919/18403760.html" target="_blank">第97章 逃之夭夭</a>(07-06)</span><span
-                                class="s5">默吼</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/39/39264/"
-                                                 target="_blank">至尊丹妃：魔王强宠</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/39/39264/18403757.html" target="_blank">第97章 另一处通道</a>(07-06)</span><span
-                                class="s5"></span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/35/35358/"
-                                                 target="_blank">战星录</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/35/35358/18403754.html" target="_blank">第三九九章 冥界之门（第三更）</a>(07-06)</span><span
-                                class="s5">石九郎</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/37/37806/"
-                                                 target="_blank">少年，养龙不</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/37/37806/18403753.html" target="_blank">第171章 枯魂蛊</a>(07-06)</span><span
-                                class="s5">上将穆易</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/36/36384/"
-                                                 target="_blank">超级萃取系统</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/36/36384/18403744.html" target="_blank">第173章 同伴</a>(07-06)</span><span
-                                class="s5">九首鲲鹏</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/20/20796/"
-                                                 target="_blank">任女</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/20/20796/18403740.html" target="_blank">第四百零九章 幸不辱命</a>(07-06)</span><span
-                                class="s5">胡六爷</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/26/26972/"
-                                                 target="_blank">我是都市医剑仙</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/26/26972/18403738.html" target="_blank">第四百零三章 你又坏我大事</a>(07-06)</span><span
-                                class="s5">胜己</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/36/36736/" target="_blank">正身法道</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/36/36736/18403735.html" target="_blank">第0333章 终于盼来性福的日子</a>(07-06)</span><span
-                                class="s5">范力天</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/32/32060/"
-                                                 target="_blank">快穿之盈满</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/32/32060/18403725.html" target="_blank">第73章：公主换皇子4</a>(07-06)</span><span
-                                class="s5">若是花开伴叶</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/27/27623/" target="_blank">绝道神帝</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/27/27623/18403586.html" target="_blank">第127章 天国府</a>(07-06)</span><span
-                                class="s5">邵俊杰</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/36/36685/"
-                                                 target="_blank">五零俏军嫂养成记</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/36/36685/18403582.html" target="_blank">第306章 大佬在现代45</a>(07-06)</span><span
-                                class="s5">九尾君上</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/30/30887/"
-                                                 target="_blank">无敌从捡个女帝开始</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/30/30887/18403581.html" target="_blank">第463章 钻研空间</a>(07-06)</span><span
-                                class="s5">云里鹿</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/20/20460/" target="_blank">修罗帝尊</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/20/20460/18403573.html" target="_blank">第1386章 你是下一个！</a>(07-06)</span><span
-                                class="s5">孤单地飞</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/32/32045/" target="_blank">天地空祖</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/32/32045/18403571.html" target="_blank">第273章 灭韩盟来袭</a>(07-06)</span><span
-                                class="s5">万川秋火</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/38/38801/" target="_blank">混修百炼</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/38/38801/18403564.html" target="_blank">第十八章 火烧清风</a>(07-06)</span><span
-                                class="s5">任家老丁</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/38/38712/" target="_blank">我的前世是游戏boss</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/38/38712/18403563.html" target="_blank">第九十九章 青蛟族的灵药园</a>(07-06)</span><span
-                                class="s5">一品白丁</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/33/33280/"
-                                                 target="_blank">无限升级之穿越诸天</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/33/33280/18403557.html" target="_blank">第1563章 虚无生物</a>(07-06)</span><span
-                                class="s5">香樟店下</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/39/39300/"
-                                                 target="_blank">血幕鸣</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/39/39300/18403551.html" target="_blank">万国辉煌 第一百二十章 偶遇</a>(07-06)</span><span
-                                class="s5">红色的风</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/38/38418/"
-                                                 target="_blank">爆笑之万能搜索引擎</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/38/38418/18403545.html" target="_blank">第九十九章 炎帮蒋炎</a>(07-06)</span><span
-                                class="s5">幸运九号</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/38/38750/"
-                                                 target="_blank">异世界魔物养殖场</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/38/38750/18403541.html" target="_blank">第108章 龙塔</a>(07-06)</span><span
-                                class="s5">脚踩异界魔王</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/34/34171/"
-                                                 target="_blank">万维</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/34/34171/18403535.html" target="_blank">第二百四十九章：交通要道</a>(07-06)</span><span
-                                class="s5">皇尘</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/36/36952/" target="_blank">仙武医生</a>》</span><span
-                                class="s3"><a href="http://www.xbiquge.la/36/36952/18403528.html" target="_blank">第一百零三章：大单治百病</a>(07-06)</span><span
-                                class="s5">古剑飞</span></li>
-
-                        <li><span class="s2">《<a href="http://www.xbiquge.la/14/14591/"
-                                                 target="_blank">斗罗大陆4终极斗罗</a>》</span><span class="s3"><a
-                                href="http://www.xbiquge.la/14/14591/18403515.html" target="_blank">第四百一十一章 五级锻造杨英明</a>(07-06)</span><span
-                                class="s5">唐家三少</span></li>
-
+                        {% for updatum in updata %}
+                            <li><span class="s2">《<a href=" /chapter/?id={{ updatum.id }}" target="_blank">{{ updatum.book_name }}</a>》</span><span class="s3"><a href="#" target="_blank">{{ updatum.book_update |date:'Y-m-d H:i:s'}}</a></span><span class="s5">{{ updatum.book_author }}</span>
+                            </li>
+                        {% endfor %}
                     </ul>
 
                     <div class="page_b">
@@ -232,21 +43,22 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <div class="pagelink" id="pagelink"><em id="pagestats">1/348</em><a
-                                            href="http://www.xbiquge.la/fenlei/1_1.html" class="first">1</a><a
-                                            href="http://www.xbiquge.la/fenlei/1_1.html"
-                                            class="pgroup">&lt;&lt;</a><strong>1</strong><a
-                                            href="http://www.xbiquge.la/fenlei/1_2.html">2</a><a
-                                            href="http://www.xbiquge.la/fenlei/1_3.html">3</a><a
-                                            href="http://www.xbiquge.la/fenlei/1_4.html">4</a><a
-                                            href="http://www.xbiquge.la/fenlei/1_5.html">5</a><a
-                                            href="http://www.xbiquge.la/fenlei/1_6.html">6</a><a
-                                            href="http://www.xbiquge.la/fenlei/1_2.html" class="next">&gt;</a><a
-                                            href="http://www.xbiquge.la/fenlei/1_348.html" class="ngroup">&gt;&gt;</a><a
-                                            href="http://www.xbiquge.la/fenlei/1_348.html"
-                                            class="last">348</a><kbd><input name="page" type="text" size="4"
-                                                                            maxlength="6"
-                                                                            onkeydown=""></kbd>
+                                    <div class="pagelink" id="pagelink">
+                                        <em id="pagestats">1/348</em>
+                                        <a href="http://www.xbiquge.la/fenlei/1_1.html" class="first">1</a>
+                                        <a href="http://www.xbiquge.la/fenlei/1_1.html"class="pgroup">&lt;&lt;</a>
+                                        <strong>1</strong>
+
+                                        <a href="http://www.xbiquge.la/fenlei/1_2.html">2</a>
+                                        <a href="http://www.xbiquge.la/fenlei/1_3.html">3</a>
+                                        <a href="http://www.xbiquge.la/fenlei/1_4.html">4</a>
+                                        <a href="http://www.xbiquge.la/fenlei/1_5.html">5</a>
+                                        <a href="http://www.xbiquge.la/fenlei/1_6.html">6</a>
+                                        <a href="http://www.xbiquge.la/fenlei/1_2.html" class="next">&gt;</a>
+                                        <a href="http://www.xbiquge.la/fenlei/1_348.html" class="ngroup">&gt;&gt;</a>
+                                        <a href="http://www.xbiquge.la/fenlei/1_348.html" class="last">348</a>
+                                        <kbd><input name="page" type="text" size="4" maxlength="6" onkeydown="">
+                                        </kbd>
                                     </div>
                                 </td>
                             </tr>
@@ -254,69 +66,16 @@
                         </table>
                     </div>
                 </div>
+
+
                 <div class="r">
-                    <h2>好看的玄幻小说</h2>
+                {# 各种好看的小说 #}
+                    <h2>好看的{{ classify }}</h2>
                     <ul>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/15/15409/">牧神记</a></span><span
-                                class="s5">宅猪</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/2/2210/">全职法师</a></span><span
-                                class="s5">乱</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/16/">上古强身术</a></span><span class="s5">我是多余人</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/14/14831/">飞剑问道</a></span><span class="s5">我吃西红柿</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/13/13959/">圣墟</a></span><span
-                                class="s5">辰东</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/381/">天域苍穹</a></span><span
-                                class="s5">风凌天下</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/14/14930/">元尊</a></span><span class="s5">天蚕土豆</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/2/2208/">霸皇纪</a></span><span
-                                class="s5">踏雪真人</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/951/">伏天氏</a></span><span
-                                class="s5">净无痕</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/69/">帝霸</a></span><span
-                                class="s5">厌笔萧生</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/119/">儒道至圣</a></span><span
-                                class="s5">永恒之火</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/3/3459/">雪鹰领主</a></span><span class="s5">我吃西红柿</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/2/2699/">妖神记</a></span><span class="s5">发飙的蜗牛</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/10/10512/">人皇纪</a></span><span class="s5">皇甫奇</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/10/">武炼巅峰</a></span><span
-                                class="s5">莫默</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/8/">大主宰</a></span><span
-                                class="s5">天蚕土豆</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/7/7877/">斗破苍穹</a></span><span class="s5">天蚕土豆</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/7/7931/">终极斗罗</a></span><span class="s5">唐家三少</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/72/">择天记</a></span><span
-                                class="s5">猫腻</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/21/21223/">召唤梦魇</a></span><span class="s5">滚开</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/15/15159/">大道朝天</a></span><span class="s5">猫腻</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/472/">武道圣尊</a></span><span
-                                class="s5">天界小兵</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/743/">诡秘之主</a></span><span class="s5">爱潜水的乌贼</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/1/1064/">原始战记</a></span><span class="s5">陈词懒调</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/19/19612/">全球高武</a></span><span class="s5">老鹰吃小鸡</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/6/6318/">全球高武</a></span><span class="s5">老鹰吃小鸡</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/14/14953/">万界天尊</a></span><span class="s5">血红</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/0/7/">绝世邪神</a></span><span
-                                class="s5">纯情犀利哥</span></li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/34/34698/">超级小村民</a></span><span class="s5">色即舍</span>
-                        </li>
-                        <li><span class="s2"><a href="http://www.xbiquge.la/8/8773/">天河大帝</a></span><span class="s5">寂寞读南华</span>
-                        </li>
+                        {% for foo in hao %}
+                            <li><span class="s2"><a href="/chapter/?id={{ foo.id }}">{{ foo.book_name }}</a></span><span class="s5">{{ foo.book_author }}</span>
+                            </li>
+                        {% endfor %}
                     </ul>
                     <div class="page_b page_b2">喜欢就收藏我们</div>
                 </div>

@@ -61,8 +61,8 @@
 {% if user_name %}
 
             <div class="nri" id="nri2" ><span id="hhh">{{ user_name }}&nbsp;&nbsp;</span><a href="{% url 'bookrack' %}"
-                                                                                           target="_top">&nbsp;&nbsp;我的书架</a> | <a
-                    href="{% url 'exit' %}" target="_self">退出登录</a>&nbsp;
+                                                                                           target="_top">&nbsp;&nbsp;我的书架</a> |
+                <a href="{% url 'exit' %}" target="_self">退出登录</a>&nbsp;
             </div>
     {% else  %}
             <div class="nri" id="nri1" >
@@ -101,28 +101,32 @@
                 target="_blank" rel="nofllow" href="http://www.xbiquge.la/jifen.html">积分规则</a>&nbsp;&nbsp;<a
                 target="_blank" rel="nofllow" href="http://www.xbiquge.la/dns.html">若从新笔趣阁跳走点这里</a></div>
 
-        </div>
-        <div class="nav">
-            <ul>
-                <li><a href="{% url 'index' %}">首页</a></li>
-                <li><a href="{% url 'bookrack' %}">我的书架</a></li>
-                <li><a href="{% url 'classify' %}">玄幻小说</a></li>
-                <li><a href="{% url 'classify' %}">修真小说</a></li>
-                <li><a href="{% url 'classify' %}">都市小说</a></li>
-                <li><a href="{% url 'classify' %}">穿越小说</a></li>
-                <li><a href="{% url 'classify' %}">网游小说</a></li>
-                <li><a href="{% url 'classify' %}">科幻小说</a></li>
-                <li><a href="{% url 'ranking_list' %}">排行榜单</a></li>
-                <li><a href="{% url 'classify' %}">全部小说</a></li>
-            </ul>
-        </div>
-        {% block body %}
 
+    </div>
+    <div class="nav">
+        <ul>
+            <li><a href="{% url 'index' %}">首页</a></li>
+            <li><a href="{% url 'bookrack' %}">我的书架</a></li>
+            <li><a href="{% url 'classify' classify='玄幻小说' %}" class="obc">玄幻小说</a></li>
+            <li><a href="{% url 'classify' classify='修真小说' %}" class="obc">修真小说</a></li>
+            <li><a href="{% url 'classify' classify='都市小说' %}" class="obc">都市小说</a></li>
+            <li><a href="{% url 'classify'  classify='穿越小说'%}" class="obc">穿越小说</a></li>
+            <li><a href="{% url 'classify'  classify='网游小说'%}" class="obc">网游小说</a></li>
+            <li><a href="{% url 'classify'  classify='科幻小说'%}" class="obc">科幻小说</a></li>
+            <li><a href="{% url 'ranking_list' %}">排行榜单</a></li>
+{#            <li><a href="{% url 'classify'  ''%}">全部小说</a></li>#}
+        </ul>
+    </div>
+
+    {% block body %}
         {% endblock %}
 
     </div>
-
-
-
 </body>
 </html>
+
+
+
+
+
+

@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-def exit(request):      #退出登录
+def exit(request):
     request.session.flush()
     return redirect(index)
 
@@ -14,12 +14,55 @@ def exit(request):      #退出登录
 @csrf_exempt     #ajax的csrf验证
 def index(request):
     if request.method =='GET':
+        # 首页图书信息传参
+        books = BodyNoval.objects.all()
+
+
+        # 【首页4个小说】
+        book = books.filter(book_category='玄幻小说')[:4]
+        # 上期强推
+        qiangtui = books.values()[:6]
+        # 【小说分类信息】
+        # 玄幻小说
+        xuanhuan_book = books.filter(book_category='玄幻小说').order_by('book_xiao')[1:13]
+        # 玄幻小说图片
+        xuanhuan_img = books.filter(book_category='玄幻小说').order_by('book_xiao')[0]
+        # 修真小说
+        xiuzhen_book = books.filter(book_category='修真小说').order_by('book_xiao')[1:13]
+        # 修真小说图片
+        xiuzhen_img = books.filter(book_category='修真小说').order_by('book_xiao')[0]
+        # 都市小说
+        dushi_book = books.filter(book_category='都市小说').order_by('book_xiao')[1:13]
+        # 都市小说图片
+        dushi_img = books.filter(book_category='都市小说').order_by('book_xiao')[0]
+        # 穿越小说
+        chuanyue_book = books.filter(book_category='穿越小说').order_by('book_xiao')[1:13]
+        # 穿越小说图片
+        chuanyue_img =books.filter(book_category='穿越小说').order_by('book_xiao')[0]
+        # 网游小说
+        wangyou_book = books.filter(book_category='网游小说').order_by('book_xiao')[1:13]
+        # 网游小说图片
+        wangyou_img = books.filter(book_category='网游小说').order_by('book_xiao')[0]
+        # 科幻小说
+        kehuan_book = books.filter(book_category='科幻小说').order_by('book_xiao')[1:13]
+        # 科幻小说图片
+        kehuan_img = books.filter(book_category='科幻小说').order_by('book_xiao')[0]
+
+        # 【最新更新小说列表】
+        new_update = books.values().order_by('-book_update')[:33]
+
+        # 【最新入库小说】
+        new_storage = books.values().order_by('-book_update')[:33]
+
+
 
         if request.session.has_key('userNumber'):
             user_name =request.session['user_name']
-            return render(request,'index.html',{'user_name':user_name})
+
+            return render(request,'index.html',{'user_name':user_name,'book':book,'xuanhuan_book':xuanhuan_book,'xuanhuan_img':xuanhuan_img,"xiuzhen_book":xiuzhen_book,"xiuzhen_img":xiuzhen_img,"dushi_book":dushi_book,"dushi_img":dushi_img,"chuanyue_book":chuanyue_book,"chuanyue_img":chuanyue_img,"wangyou_book":wangyou_book,"wangyou_img":wangyou_img,"kehuan_book":kehuan_book,"kehuan_img":kehuan_img,"qiangtui":qiangtui,"new_update":new_update,"new_storage":new_storage})
         else:
-            return render(request,'index.html')
+            return render(request,'index.html',{'book':book,'xuanhuan_book':xuanhuan_book,'xuanhuan_img':xuanhuan_img,"xiuzhen_book":xiuzhen_book,"xiuzhen_img":xiuzhen_img,"dushi_book":dushi_book,"dushi_img":dushi_img,"chuanyue_book":chuanyue_book,"chuanyue_img":chuanyue_img,"wangyou_book":wangyou_book,"wangyou_img":wangyou_img,"kehuan_book":kehuan_book,"kehuan_img":kehuan_img,"qiangtui":qiangtui,"new_update":new_update,"new_storage":new_storage})
+
 
     else:
         userNumber = request.POST.get('userNumber')
@@ -74,7 +117,7 @@ def register(request):        #注册
         return render(request, 'index.html')
 
 
-def verify(request):    #注册验证
+def verify(request):
     type = request.POST.get('type')
     data=request.POST.get('data')
     error_type = request.POST.get('error_type')
@@ -185,19 +228,23 @@ def chapter(request):
 
     request_list = request.GET
     book_id = request_list.get('id')
+    print(book_id)
 
-
-    chapter_info = models.BodyNoval.objects.filter(id=int(book_id))[0]  #获取当前书的id值
-    chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id')       #获取当前书的所有章节并排序
+    chapter_info = models.BodyNoval.objects.filter(id=int(book_id))[0]  # 获取当前书的id值
+    category = chapter_info.book_category           #获取当前书的id值
+    print(category)
+    chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by(
+        'chapter_id')  # 获取当前书的所有章节并排序
     chapter_list = chapter_list[0:102]
 
     if request.session.has_key('userNumber'):
-        user_name =request.session['user_name']
-        return render(request, 'chapter.html', {'chapter_info': chapter_info, 'chapter_list': chapter_list,'page':1,'book_id':book_id,'user_name':user_name})
+        user_name = request.session['user_name']
+        return render(request, 'chapter.html',
+                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id,
+                       'category':category,'user_name': user_name})
     else:
         return render(request, 'chapter.html',
-                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id})
-
+                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id,'category':category})
 
 # 使用ajax跳转章节分页
 @csrf_exempt

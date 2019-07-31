@@ -79,6 +79,7 @@
                 "{% url 'verify' %}",
                 {'type':type,'data':data,'error_type':error_type},
                 function (data) {
+                    {#alert(data.error_type)#}
                     document.getElementById(data.error_types).innerHTML = data.verify
                 }
             )
