@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from .models import *
 from .import models
 from django.http import JsonResponse
@@ -188,21 +188,39 @@ def chapter(request):
     :return:
     """
 
+    # request_list = request.GET
+    # book_id = request_list.get('id')
+    #
+    #
+    # chapter_info = models.BodyNoval.objects.filter(id=int(book_id))[0]
+    # chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id')
+    # chapter_list = chapter_list[0:102]
+
+    # if request.session.has_key('userNumber'):
+    #     user_name =request.session['user_name']
+    #     return render(request, 'chapter.html', {'chapter_info': chapter_info, 'chapter_list': chapter_list,'page':1,'book_id':book_id,'user_name':user_name})
+    # else:
+    #     return render(request, 'chapter.html', {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page':1, 'book_id': book_id})
+
     request_list = request.GET
     book_id = request_list.get('id')
+    print(book_id)
 
-
-    chapter_info = models.BodyNoval.objects.filter(id=int(book_id))[0]
-    chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id')
+    chapter_info = models.BodyNoval.objects.filter(id=int(book_id))[0]  # 获取当前书的id值
+    category = chapter_info.book_category           #获取当前书的id值
+    print(category)
+    chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by(
+        'chapter_id')  # 获取当前书的所有章节并排序
     chapter_list = chapter_list[0:102]
 
     if request.session.has_key('userNumber'):
-        user_name =request.session['user_name']
-        return render(request, 'chapter.html', {'chapter_info': chapter_info, 'chapter_list': chapter_list,'page':1,'book_id':book_id,'user_name':user_name})
+        user_name = request.session['user_name']
+        return render(request, 'chapter.html',
+                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id,
+                       'category':category,'user_name': user_name})
     else:
         return render(request, 'chapter.html',
-                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id})
-
+                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id,'category':category})
 
 # 使用ajax跳转章节分页
 @csrf_exempt
@@ -358,7 +376,19 @@ def classify(request,classify):
     updata = noval.order_by('book_update')[0:30]
     # 好看的玄幻小说
     hao = noval.order_by('-id')[0:30]
-    return render(request,'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
+    print('classify=',classify)
+    print('noval=',noval)
+    print('zhans=',zhans)
+    print('updata=',updata)
+    print('hao=',hao)
+
+
+    # return render(request,'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
+    if request.session.has_key('userNumber'):
+        user_name = request.session['user_name']
+        return render(request, 'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao,'user_name':user_name})
+    else:
+        return render(request, 'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
 
 
 def all_book(request):
