@@ -388,9 +388,37 @@ def ranking_list(request):    #排行榜
     else:
         return render(request, 'ranking_list.html', dict1)
 
-def classify(request):
+# def classify(request):
+#
+#
+#     return render(request, 'classify.html')
 
-    return render(request, 'classify.html')
+
+#分类页面
+def classify(request,classify):
+
+    #查找所有类别的小说
+    noval = BodyNoval.objects.filter(book_category=classify)
+    # 展示图片的6个小说
+    zhans = noval[:6]
+    # 展示最近更新的小说
+    updata = noval.order_by('book_update')[0:30]
+    # 好看的玄幻小说
+    hao = noval.order_by('-id')[0:30]
+    print('classify=',classify)
+    print('noval=',noval)
+    print('zhans=',zhans)
+    print('updata=',updata)
+    print('hao=',hao)
+
+
+    # return render(request,'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
+    if request.session.has_key('userNumber'):
+        user_name = request.session['user_name']
+        return render(request, 'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao,'user_name':user_name})
+    else:
+        return render(request, 'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
+
 
 def all_book(request):
 
