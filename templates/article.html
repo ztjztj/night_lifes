@@ -4,7 +4,7 @@
     <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
     <div class="content_read">
         <div class="box_con">
-            <div class="con_top">
+            <div class="con_top" >
                 <div id="page_set">
                     <select onchange="javascript:setFont(this.options[this.selectedIndex].value);" id="bcolor"
                             name="bcolor">
@@ -88,13 +88,13 @@
                              value="">&nbsp;夜间<input type="checkbox" name="night" id="night"
                                                      onchange="javascript:setNight();" value=""></div>
 
-{#                <a href={% url 'index' %}>新笔趣阁</a> &gt; <a href={% url 'classify' %}>{{ book_category }}</a>#}
-                &gt; <a href={% url 'article' %}>{{ book_name }}</a> &gt;
+                <a href={% url 'index' %} >新笔趣阁</a> &gt; <a href={% url 'classify' book_category %}>{{ book_category }}</a>
+                &gt; <a href="/chapter/?id={{ book_id }}">{{ book_name }}</a> &gt;
             </div>
-            <div class="bookname">
+            <div class="bookname" >
                 <h1 id="chapter_name">{{ info.book_section }}</h1>
 
-                <div class="bottem1">
+                <div class="bottem1" >
                     <a onclick="">投推荐票</a>
                     <a class="up_switch" onclick="article_ajax('{{ info.book_foreign }}','{{ info.book_chapter_id|add:-1 }}')">上一章</a>←
                     <a href="/chapter/?id={{ book_id }}">章节目录</a> →
@@ -131,8 +131,11 @@
                     var down_id = info.book_chapter_id +1;
                     $('.up_switch').attr('onclick','article_ajax("' + info.book_foreign + '","' + up_id + '")');
                     $('.down_switch').attr('onclick','article_ajax("' + info.book_foreign + '","' + down_id + '")');
+                    $("html,body").animate({"scrollTop":0})
                 })
             })
         }
+
+
     </script>
 {% endblock %}
