@@ -231,7 +231,7 @@ def chapter(request):
     print(book_id)
 
     chapter_info = models.BodyNoval.objects.filter(id=int(book_id))[0]  # 获取当前书的id值
-    category = chapter_info.book_category           #获取当前书的id值
+    category = chapter_info.book_category
     print(category)
     chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by(
         'chapter_id')  # 获取当前书的所有章节并排序
