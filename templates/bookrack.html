@@ -75,16 +75,33 @@
                 </tr>
                 {% for foo in novel_all_object %}
                     <tr>
-                        <td class="even" style="text-align: center"><a href="/chapter/?id={{ foo.Noval_foregin.id }}" target="_blank">{{ foo.Noval_foregin.book_name }}</a></td>
-                        <td class="odd" style="text-align: center"><a href="#" target="_blank">{{ foo.Noval_foregin.book_url }}</a>
+{#                        <td class="even" style="text-align: center"><a href="/chapter/?id={{ foo.Noval_foregin.id }}" target="_blank">{{ foo.Noval_foregin.book_name }}</a></td>#}
+{#                        <td class="odd" style="text-align: center"><a href="#" target="_blank">{{ foo.Noval_foregin.book_url }}</a>#}
+
+                        <td class="even" style="text-align: center"><a href="/chapter/?id={{ foo.Noval_foregin.id }}" target="_blank"><img
+                                src="{{ foo.Noval_foregin.book_img }}" alt="加载失败" style="width: 140px;height: 150px"></a></td>
+
+                        <td class="odd" style="text-align: center;width: 300px"><a href="/chapter/?id={{ foo.Noval_foregin.id }}" target="_blank">{{ foo.Noval_foregin.book_name }}</a>
 
                         </td>
                         <td class="even">{{ foo.Noval_foregin.book_intro }}</td>
-                        <td class="odd" align="center">{{ foo.book_add }}</td>
+                        <td class="odd" align="center">{{ foo.book_add|date:'Y年-m月-d日' }}</td>
                         <td class="even" align="center"><a
-                                href="">移除</a>
+                                href="" onclick="del_book({{ user_id }},{{ foo.Noval_foregin.id }})">移除</a>
                         </td>
                     </tr>
+
+                    <script>
+                        function del_book(user_id,book_id) {
+                            $.post(
+                                "{% url 'del_book_ajax' %}",
+                                {'user_id':user_id,'book_id':book_id},
+                                function (data) {
+                                    alert(data.del)
+                                }
+                            )
+                        }
+                    </script>
                 {% endfor %}
                 </tbody>
             </table>

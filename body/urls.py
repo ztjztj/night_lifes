@@ -8,6 +8,7 @@ urlpatterns = [
     path('chapter/',views.chapter,name="chapter"),
     path('chapter_ajax',views.chapter_ajax,name = "chapter_ajax"),
     path('register/',views.register,name="register"),  #注册
+    path('register_ajax/',views.register_ajax,name='register_ajax'),  #注册ajax总验证
     path('article/',views.article,name="article"),
     path('ranking_list/',views.ranking_list,name="ranking_list"),
     path('classify/<str:classify>/',views.classify,name="classify"),
@@ -16,6 +17,7 @@ urlpatterns = [
     path('article_ajax/',views.article_ajax,name="article_ajax"),
     path('verify/',views.verify,name='verify'),    #验证
     path('add_bookrack_ajax/',views.add_bookrack_ajax,name='add_bookrack_ajax'), #添加书架ajax
+    path('del_book_ajax/',views.del_book_ajax,name='del_book_ajax'), #删除书架图书的ajax
 
 
 ]

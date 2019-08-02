@@ -4,7 +4,7 @@
     <div id="main" >
         <div id="content"><br>
 
-            <form name="frmregister" id="frmregister" action="{% url 'register' %}"
+            <form name="frmregister" id="frmregister"
                   method="post" >
                 <table class="grid" width="580" align="center">
                     <caption>新用户注册</caption>
@@ -12,14 +12,14 @@
                     <tr>
                         <td class="odd" width="25%">账号<span class="hottext">(必填)</span></td>
                         <td class="even"><input type="text" class="text" name="userNumber" id="usernumber"
-                                                size="25" maxlength="30" style="width:160px" value="" onblur="verify('账号',this.value,'usermsg')"> <span
-                                id="usermsg"></span></td>
+                                                size="25" maxlength="30" style="width:160px" value="" onblur="verify('账号',this.value,'usermsg')">
+                            <span id="usermsg"></span></td>
                     </tr>
                     <tr>
                         <td class="odd" width="25%">密码<span class="hottext">(必填)</span></td>
                         <td class="even"><input type="password" class="text" name="password" id="password"
-                                                size="25" maxlength="20" style="width:160px" value="" onblur="verify('密码',this.value,'passmsg')"> <span
-                                id="passmsg"></span></td>
+                                                size="25" maxlength="20" style="width:160px" value="" onblur="verify('密码',this.value,'passmsg')">
+                            <span id="passmsg"></span></td>
                     </tr>
 {#                    <tr>#}
 {#                        <td class="odd" width="25%">重复密码<span class="hottext">(必填)</span></td>#}
@@ -31,15 +31,15 @@
                     <tr>
                         <td class="odd" width="25%">用户名<span class="hottext">(必填)</span></td>
                         <td class="even"><input type="text" class="text" name="user_name" id="repassword" size="25"
-                                                maxlength="20" style="width:160px" value="" onblur="verify('用户名',this.value,'yhm')"> <span
-                                id="yhm"></span></td>
+                                                maxlength="20" style="width:160px" value="" onblur="verify('用户名',this.value,'yhmmsg')">
+                            <span id="yhmmsg"></span></td>
                     </tr>
 
                     <tr>
                         <td class="odd" width="25%">Email<span class="hottext">(必填)</span></td>
                         <td class="even"><input type="text" class="text" name="email" id="email" size="25"
-                                                maxlength="60" style="width:160px" value="" onblur="verify('邮箱',this.value,'mailmsg')"> <span
-                                id="mailmsg"></span>
+                                                maxlength="60" style="width:160px" value="" onblur="verify('邮箱',this.value,'mailmsg')">
+                            <span  id="mailmsg"></span>
 {#                            <input type="checkbox" class="checkbox" name="viewemail" value="1">公开邮箱#}
                         </td>
                     </tr>
@@ -65,7 +65,7 @@
                     <tr>
                         <td class="odd" width="25%">&nbsp;<input type="hidden" name="action" id="action"
                                                                  value="newuser"></td>
-                        <td class="even"><input type="submit" class="button" name="submit" id="submit" value="提 交"></td>
+                        <td class="even"><input type="button" class="button" name="submit" id="submit" value="提 交" onclick="all_check()"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -74,15 +74,43 @@
     </div>
 
     <script>
-            function verify(type,data,error_type) {           //用户名验证
+            function verify(type,data,error_type) {   //将input类型和输入的信息和错误信息展示框Id传后台验证
             $.post(
                 "{% url 'verify' %}",
                 {'type':type,'data':data,'error_type':error_type},
                 function (data) {
                     {#alert(data.error_type)#}
-                    document.getElementById(data.error_types).innerHTML = data.verify
+                    document.getElementById(data.error_types).innerHTML = data.verify  //将回调过来的错误信息展示到指定的错误信息展示框
                 }
             )
         }
+
+            function all_check() {  //总的验证
+        verify('账号',frmregister.usernumber.value,'usermsg'); //调用verify的ajax 传值过去验证
+        verify('密码',frmregister.password.value,'passmsg');
+        verify('用户名',frmregister.repassword.value,'yhmmsg');
+        verify('邮箱',frmregister.email.value,'mailmsg');
+        var usermsg=$('#usermsg').text();   //获取账号错误展示框id
+        var passmsg=$('#passmsg').text();
+        var yhmmsg=$('#yhmmsg').text();
+        var mailmsg=$('#mailmsg').text();
+        if (usermsg =="" && passmsg=="" && yhmmsg=="" && mailmsg=="" ){ //如果框内无信息，说明无报错
+            $.ajax({
+                url: '{% url 'register_ajax' %}',
+                type: 'post',
+                datatype: 'json',
+                data: $('#frmregister').serialize(),      //提交表单中所有的name标签
+
+                success: (function (data) {
+                    alert(data.verify);
+                    {#location.href="{% url 'registration_index' %}"#}  //jquery跳转页面
+                    window.location.href = "{% url 'register' %}";  //jquery跳转页面  刷新此页面
+                })
+            },
+
+            )
+        }
+    }
+
     </script>
 {% endblock %}

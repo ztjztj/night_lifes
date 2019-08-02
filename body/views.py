@@ -91,36 +91,42 @@ def index(request):
 
 
 
-def register(request):        #注册
-    if request.method=='GET':
+def register(request):        #注册页面
+
         return render(request,'register.html')
-    else:
-        userNumber = request.POST.get('userNumber')
-        password =request.POST.get('password')
-        password2 =request.POST.get('password')
-        user_name =request.POST.get('user_name')
-        email =request.POST.get('email')
-        sex =request.POST.get('sex')
-        qq =request.POST.get('qq')
-
-        print(userNumber,password,password2,email,sex,qq)
-
-        bodyuser =models.BodyUser()
-        bodyuser.userNumber=userNumber
-        bodyuser.password =password
-        bodyuser.user_name=user_name
-        bodyuser.email=email
-        bodyuser.sex=sex
-        bodyuser.qq =qq
-
-        bodyuser.save()
-        return render(request, 'index.html')
 
 
+# 注册ajax总验证
+@csrf_exempt
+def register_ajax(request):
+    userNumber = request.POST.get('userNumber')
+    password = request.POST.get('password')
+    password2 = request.POST.get('password')
+    user_name = request.POST.get('user_name')
+    email = request.POST.get('email')
+    sex = request.POST.get('sex')
+    qq = request.POST.get('qq')
+
+    print(userNumber, password, password2, email, sex, qq)
+
+    bodyuser = models.BodyUser()
+    bodyuser.userNumber = userNumber
+    bodyuser.password = password
+    bodyuser.user_name = user_name
+    bodyuser.email = email
+    bodyuser.sex = sex
+    bodyuser.qq = qq
+
+    bodyuser.save()
+    # return render(request, 'index.html',{'verify':'注册成功'})
+    return JsonResponse({'verify': '注册成功'})
+
+
+#注册验证ajax  分类验证
 def verify(request):
-    type = request.POST.get('type')
-    data=request.POST.get('data')
-    error_type = request.POST.get('error_type')
+    type = request.POST.get('type')    #获取input标签id名
+    data=request.POST.get('data')      #获取标签内输入的数据
+    error_type = request.POST.get('error_type')    #获取存放错误信息的盒子id
     print(type,data)
     if type =='账号':
         if data =='':
@@ -131,7 +137,8 @@ def verify(request):
             except models.BodyUser.DoesNotExist:
                 user =None
             if user ==None:
-                return JsonResponse({'verify':'账号暂未注册，可以使用','error_types':error_type})
+                # return JsonResponse({'verify':'账号暂未注册，可以使用','error_types':error_type})
+                return JsonResponse({'verify':'','error_types':error_type})
             else:
                 return JsonResponse({'verify':'账号已被注册，请您更换账号','error_types':error_type})
     elif type =='密码':
@@ -139,7 +146,8 @@ def verify(request):
         if data == '':
             return JsonResponse({'verify': '密码不能为空','error_types':error_type})
         else:
-            return JsonResponse({'verify': '请记住您输入的密码','error_types':error_type})
+            # return JsonResponse({'verify': '请记住您输入的密码','error_types':error_type})
+            return JsonResponse({'verify':'','error_types':error_type})
 
     elif type =='用户名':
         if data == '':
@@ -150,7 +158,8 @@ def verify(request):
             except models.BodyUser.DoesNotExist:
                 user =None
             if user==None:
-                return JsonResponse({'verify':'该用户名可以使用','error_types':error_type})
+                # return JsonResponse({'verify':'该邮箱可以使用','error_types':error_type})
+                return JsonResponse({'verify':'','error_types':error_type})
             else:
                 return JsonResponse({'verify':'该用户名已被使用','error_types':error_type})
 
@@ -163,11 +172,13 @@ def verify(request):
             except models.BodyUser.DoesNotExist:
                 user =None
             if user==None:
-                return JsonResponse({'verify':'该邮箱可以使用','error_types':error_type})
+                # return JsonResponse({'verify':'该邮箱可以使用','error_types':error_type})
+                return JsonResponse({'verify':'','error_types':error_type})
             else:
                 return JsonResponse({'verify':'该邮箱已被使用','error_types':error_type})
     else:
-        return JsonResponse({'verify':'请输入正确内容','error_types':error_type})
+        # return JsonResponse({'verify':'请输入正确内容','error_types':error_type})
+        return JsonResponse({'verify':'请输入正确内容'})
 
 
 def bookrack(request):   #书架
@@ -186,6 +197,22 @@ def bookrack(request):   #书架
     else:
         return render(request,'bookrack.html')
 
+#书架删除图书ajax
+@csrf_exempt
+def del_book_ajax(request):
+    user_id =request.POST.get('user_id')   #获取用户id
+    book_id =request.POST.get('book_id')   #获取图书的id
+    print('user_id=',user_id)
+    print('book_id=',book_id)
+    book = models.bookrack.objects.get(user_foregin=user_id,Noval_foregin=book_id) #查找出书架中用户id和书id都匹配上的图书
+    # print(book)
+    # print(book.id)
+    book.delete()
+    return JsonResponse({'del':'删除成功'})
+
+
+
+#添加图书到书架
 def add_bookrack_ajax(request):
     if request.session.has_key('userNumber'):
         user_name =request.session['user_name']   #获取当前用户名

@@ -76,10 +76,12 @@
                 url :"{% url 'add_bookrack_ajax' %}",
                 dataType: 'json',
                 type: 'post',
-                data:{"book_id" :book_id}
+                data:{"book_id" :book_id},
 
-            }).success(function (data) {
+                success:(function (data) {
+                alert(1);
                 alert(data.verify)
+            })
             })
         }
     </script>
