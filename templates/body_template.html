@@ -38,11 +38,12 @@
                         {#$("#nri1").hide();#}
                         {#$("#nri2").show();#}
                         {#$('#hhh').html(user_name);#}
-                        location.href='{% url 'index' %}'
-                    }else {
+                        location.href = '{% url 'index' %}'
+                    } else {
                         $("#nri1").hide();
                         $("#nri2").show();
                         $('#hhh').html(user_name);
+                        location.href = "{% url 'index' %}";
                     }
                 }
             )
@@ -58,31 +59,34 @@
     <div class="ywtop">
 
         <div class="ywtop_con">
-{% if user_name %}
+            {% if user_name %}
 
-            <div class="nri" id="nri2" ><span id="hhh">{{ user_name }}&nbsp;&nbsp;</span><a href="{% url 'bookrack' %}"
-                                                                                           target="_top">&nbsp;&nbsp;我的书架</a> |
-                <a href="{% url 'exit' %}" target="_self">退出登录</a>&nbsp;
-            </div>
-    {% else  %}
-            <div class="nri" id="nri1" >
-                <form name="frmlogin" id="frmlogin" method="post" action="{% url 'index' %}">
-                    <div class="cc">
-                        <div class="txt">账号：</div>
-                        <div class="inp"><input type="text" name="userNumber" id="username"></div>
-                    </div>
-                    <div class="cc">
-                        <div class="txt">密码：</div>
-                        <div class="inp"><input type="password" name="password" id="password"></div>
-                    </div>
-                    <div class="frii"><input type="submit" style="color:grey;background-position:0 -96px;border:medium none;background-color:#E1ECED;float:left;font-size:14px;height:21px;line-height:21px;text-align:center;width:70px;" value="登录"></div>
-                    <div class="ccc">
-                        <div class="txtt"><a href="{% url 'retrieve_password' %}">忘记密码</a></div>
-                        <div class="txtt"><a href="{% url 'register' %}">用户注册</a></div>
-                    </div>
-                </form>
-            </div>
-{% endif %}
+                <div class="nri" id="nri2"><span id="hhh">{{ user_name }}&nbsp;&nbsp;</span><a
+                        href="{% url 'bookrack' %}"
+                        target="_top">&nbsp;&nbsp;我的书架</a> |
+                    <a href="{% url 'exit' %}" target="_self">退出登录</a>&nbsp;
+                </div>
+            {% else %}
+                <div class="nri" id="nri1">
+                    <form name="frmlogin" id="frmlogin" method="post" action="{% url 'index' %}">
+                        <div class="cc">
+                            <div class="txt">账号：</div>
+                            <div class="inp"><input type="text" name="userNumber" id="username"></div>
+                        </div>
+                        <div class="cc">
+                            <div class="txt">密码：</div>
+                            <div class="inp"><input type="password" name="password" id="password"></div>
+                        </div>
+                        <div class="frii"><input type="submit"
+                                                 style="color:grey;background-position:0 -96px;border:medium none;background-color:#E1ECED;float:left;font-size:14px;height:21px;line-height:21px;text-align:center;width:70px;"
+                                                 value="登录"></div>
+                        <div class="ccc">
+                            <div class="txtt"><a href="{% url 'retrieve_password' %}">忘记密码</a></div>
+                            <div class="txtt"><a href="{% url 'register' %}">用户注册</a></div>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
 
         </div>
     </div>
@@ -90,7 +94,7 @@
 
     <div class="header">
 
-        <script type="text/javascript">bqg_panel();</script>
+        {#        <script type="text/javascript">bqg_panel();</script>#}
         <div class="header_search">
             <div id="bdcs"></div>
         </div>
@@ -110,18 +114,18 @@
             <li><a href="{% url 'classify' classify='玄幻小说' %}" class="obc">玄幻小说</a></li>
             <li><a href="{% url 'classify' classify='修真小说' %}" class="obc">修真小说</a></li>
             <li><a href="{% url 'classify' classify='都市小说' %}" class="obc">都市小说</a></li>
-            <li><a href="{% url 'classify'  classify='穿越小说'%}" class="obc">穿越小说</a></li>
-            <li><a href="{% url 'classify'  classify='网游小说'%}" class="obc">网游小说</a></li>
-            <li><a href="{% url 'classify'  classify='科幻小说'%}" class="obc">科幻小说</a></li>
+            <li><a href="{% url 'classify'  classify='穿越小说' %}" class="obc">穿越小说</a></li>
+            <li><a href="{% url 'classify'  classify='网游小说' %}" class="obc">网游小说</a></li>
+            <li><a href="{% url 'classify'  classify='科幻小说' %}" class="obc">科幻小说</a></li>
             <li><a href="{% url 'ranking_list' %}">排行榜单</a></li>
-{#            <li><a href="{% url 'classify'  classify='全部小说'%}" class="obc">全部小说</a></li>#}
+            {#            <li><a href="{% url 'classify'  classify='全部小说'%}" class="obc">全部小说</a></li>#}
         </ul>
     </div>
 
     {% block body %}
-        {% endblock %}
+    {% endblock %}
 
-    </div>
+</div>
 </body>
 </html>
 

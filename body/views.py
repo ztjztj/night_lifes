@@ -1,6 +1,6 @@
-from django.shortcuts import render,HttpResponse,redirect
+from django.shortcuts import render, HttpResponse, redirect
 from .models import *
-from .import models
+from . import models
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -38,7 +38,7 @@ def index(request):
         # 穿越小说
         chuanyue_book = books.filter(book_category='穿越小说').order_by('book_xiao')[1:13]
         # 穿越小说图片
-        chuanyue_img =books.filter(book_category='穿越小说').order_by('book_xiao')[0]
+        chuanyue_img = books.filter(book_category='穿越小说').order_by('book_xiao')[0]
         # 网游小说
         wangyou_book = books.filter(book_category='网游小说').order_by('book_xiao')[1:13]
         # 网游小说图片
@@ -54,46 +54,122 @@ def index(request):
         # 【最新入库小说】
         new_storage = books.values().order_by('-book_update')[:33]
 
-
-
         if request.session.has_key('userNumber'):
-            user_name =request.session['user_name']
+            user_name = request.session['user_name']
 
-            return render(request,'index.html',{'user_name':user_name,'book':book,'xuanhuan_book':xuanhuan_book,'xuanhuan_img':xuanhuan_img,"xiuzhen_book":xiuzhen_book,"xiuzhen_img":xiuzhen_img,"dushi_book":dushi_book,"dushi_img":dushi_img,"chuanyue_book":chuanyue_book,"chuanyue_img":chuanyue_img,"wangyou_book":wangyou_book,"wangyou_img":wangyou_img,"kehuan_book":kehuan_book,"kehuan_img":kehuan_img,"qiangtui":qiangtui,"new_update":new_update,"new_storage":new_storage})
+            return render(request, 'index.html', {'user_name': user_name, 'book': book, 'xuanhuan_book': xuanhuan_book,
+                                                  'xuanhuan_img': xuanhuan_img, "xiuzhen_book": xiuzhen_book,
+                                                  "xiuzhen_img": xiuzhen_img, "dushi_book": dushi_book,
+                                                  "dushi_img": dushi_img, "chuanyue_book": chuanyue_book,
+                                                  "chuanyue_img": chuanyue_img, "wangyou_book": wangyou_book,
+                                                  "wangyou_img": wangyou_img, "kehuan_book": kehuan_book,
+                                                  "kehuan_img": kehuan_img, "qiangtui": qiangtui,
+                                                  "new_update": new_update, "new_storage": new_storage})
         else:
-            return render(request,'index.html',{'book':book,'xuanhuan_book':xuanhuan_book,'xuanhuan_img':xuanhuan_img,"xiuzhen_book":xiuzhen_book,"xiuzhen_img":xiuzhen_img,"dushi_book":dushi_book,"dushi_img":dushi_img,"chuanyue_book":chuanyue_book,"chuanyue_img":chuanyue_img,"wangyou_book":wangyou_book,"wangyou_img":wangyou_img,"kehuan_book":kehuan_book,"kehuan_img":kehuan_img,"qiangtui":qiangtui,"new_update":new_update,"new_storage":new_storage})
+            return render(request, 'index.html',
+                          {'book': book, 'xuanhuan_book': xuanhuan_book, 'xuanhuan_img': xuanhuan_img,
+                           "xiuzhen_book": xiuzhen_book, "xiuzhen_img": xiuzhen_img, "dushi_book": dushi_book,
+                           "dushi_img": dushi_img, "chuanyue_book": chuanyue_book, "chuanyue_img": chuanyue_img,
+                           "wangyou_book": wangyou_book, "wangyou_img": wangyou_img, "kehuan_book": kehuan_book,
+                           "kehuan_img": kehuan_img, "qiangtui": qiangtui, "new_update": new_update,
+                           "new_storage": new_storage})
 
 
     else:
-        userNumber = request.POST.get('userNumber')
-        password = request.POST.get('password')
-        print(userNumber,password)
+
+        books = BodyNoval.objects.all()
+
+        # 【首页4个小说】
+        book = books.filter(book_category='玄幻小说')[:4]
+        # 上期强推
+        qiangtui = books.values()[:6]
+        # 【小说分类信息】
+        # 玄幻小说
+        xuanhuan_book = books.filter(book_category='玄幻小说').order_by('book_xiao')[1:13]
+        # 玄幻小说图片
+        xuanhuan_img = books.filter(book_category='玄幻小说').order_by('book_xiao')[0]
+        # 修真小说
+        xiuzhen_book = books.filter(book_category='修真小说').order_by('book_xiao')[1:13]
+        # 修真小说图片
+        xiuzhen_img = books.filter(book_category='修真小说').order_by('book_xiao')[0]
+        # 都市小说
+        dushi_book = books.filter(book_category='都市小说').order_by('book_xiao')[1:13]
+        # 都市小说图片
+        dushi_img = books.filter(book_category='都市小说').order_by('book_xiao')[0]
+        # 穿越小说
+        chuanyue_book = books.filter(book_category='穿越小说').order_by('book_xiao')[1:13]
+        # 穿越小说图片
+        chuanyue_img = books.filter(book_category='穿越小说').order_by('book_xiao')[0]
+        # 网游小说
+        wangyou_book = books.filter(book_category='网游小说').order_by('book_xiao')[1:13]
+        # 网游小说图片
+        wangyou_img = books.filter(book_category='网游小说').order_by('book_xiao')[0]
+        # 科幻小说
+        kehuan_book = books.filter(book_category='科幻小说').order_by('book_xiao')[1:13]
+        # 科幻小说图片
+        kehuan_img = books.filter(book_category='科幻小说').order_by('book_xiao')[0]
+
+        # 【最新更新小说列表】
+        new_update = books.values().order_by('-book_update')[:33]
+
+        # 【最新入库小说】
+        new_storage = books.values().order_by('-book_update')[:33]
+
+        userNumber = request.POST.get('userNumber', '')
+        password = request.POST.get('password', '')
+        print(userNumber, password)
         # user = models.BodyUser.objects.get(userNumber=userNumber,password=password)
+        if userNumber == '' or password == '':
+            return render(request, 'index.html', {'book': book, 'xuanhuan_book': xuanhuan_book,
+                                                  'xuanhuan_img': xuanhuan_img, "xiuzhen_book": xiuzhen_book,
+                                                  "xiuzhen_img": xiuzhen_img, "dushi_book": dushi_book,
+                                                  "dushi_img": dushi_img, "chuanyue_book": chuanyue_book,
+                                                  "chuanyue_img": chuanyue_img, "wangyou_book": wangyou_book,
+                                                  "wangyou_img": wangyou_img, "kehuan_book": kehuan_book,
+                                                  "kehuan_img": kehuan_img, "qiangtui": qiangtui,
+                                                  "new_update": new_update, "new_storage": new_storage})
 
         try:
-            user = models.BodyUser.objects.get(userNumber=userNumber,password=password)
+            user = models.BodyUser.objects.get(userNumber=userNumber, password=password)
         except  models.BodyUser.DoesNotExist:
-            user=None
+            user = None
 
-        print('user='+str(user))
+        print('user=' + str(user))
         if user != None:
             request.session['userNumber'] = userNumber
             request.session['passwprd'] = password
             request.session['user_name'] = user.user_name
             user_name = request.session['user_name']
-            print('user_name=',user_name)
-            return render(request, 'index.html', {'user_name': user_name})
+            print('user_name=', user_name)
+            return render(request, 'index.html', {'user_name': user_name, 'book': book, 'xuanhuan_book': xuanhuan_book,
+                                                  'xuanhuan_img': xuanhuan_img, "xiuzhen_book": xiuzhen_book,
+                                                  "xiuzhen_img": xiuzhen_img, "dushi_book": dushi_book,
+                                                  "dushi_img": dushi_img, "chuanyue_book": chuanyue_book,
+                                                  "chuanyue_img": chuanyue_img, "wangyou_book": wangyou_book,
+                                                  "wangyou_img": wangyou_img, "kehuan_book": kehuan_book,
+                                                  "kehuan_img": kehuan_img, "qiangtui": qiangtui,
+                                                  "new_update": new_update, "new_storage": new_storage})
+
+            # return render(request, 'index.html', {'user_name': user_name})
             # return JsonResponse({'user_name':user_name})
+
         else:
-            return render(request, 'index.html')
+            # return render(request, 'index.html')
+            return render(request, 'index.html', {'book': book, 'xuanhuan_book': xuanhuan_book,
+                                                  'xuanhuan_img': xuanhuan_img, "xiuzhen_book": xiuzhen_book,
+                                                  "xiuzhen_img": xiuzhen_img, "dushi_book": dushi_book,
+                                                  "dushi_img": dushi_img, "chuanyue_book": chuanyue_book,
+                                                  "chuanyue_img": chuanyue_img, "wangyou_book": wangyou_book,
+                                                  "wangyou_img": wangyou_img, "kehuan_book": kehuan_book,
+                                                  "kehuan_img": kehuan_img, "qiangtui": qiangtui,
+                                                  "new_update": new_update, "new_storage": new_storage})
+
             # return JsonResponse({'user_name':'用户名或者密码错误'})
 
 
+def register(request):  # 注册页面
 
-
-def register(request):        #注册页面
-
-        return render(request,'register.html')
+    return render(request, 'register.html')
 
 
 # 注册ajax总验证
@@ -122,105 +198,107 @@ def register_ajax(request):
     return JsonResponse({'verify': '注册成功'})
 
 
-#注册验证ajax  分类验证
+# 注册验证ajax  分类验证
 def verify(request):
-    type = request.POST.get('type')    #获取input标签id名
-    data=request.POST.get('data')      #获取标签内输入的数据
-    error_type = request.POST.get('error_type')    #获取存放错误信息的盒子id
-    print(type,data)
-    if type =='账号':
-        if data =='':
-            return JsonResponse({'verify':'账号不能为空','error_types':error_type})
+    type = request.POST.get('type')  # 获取input标签id名
+    data = request.POST.get('data')  # 获取标签内输入的数据
+    error_type = request.POST.get('error_type')  # 获取存放错误信息的盒子id
+    print(type, data)
+    if type == '账号':
+        if data == '':
+            return JsonResponse({'verify': '账号不能为空', 'error_types': error_type})
         else:
             try:
                 user = models.BodyUser.objects.get(userNumber=data)
             except models.BodyUser.DoesNotExist:
-                user =None
-            if user ==None:
+                user = None
+            if user == None:
                 # return JsonResponse({'verify':'账号暂未注册，可以使用','error_types':error_type})
-                return JsonResponse({'verify':'','error_types':error_type})
+                return JsonResponse({'verify': '', 'error_types': error_type})
             else:
-                return JsonResponse({'verify':'账号已被注册，请您更换账号','error_types':error_type})
-    elif type =='密码':
+                return JsonResponse({'verify': '账号已被注册，请您更换账号', 'error_types': error_type})
+    elif type == '密码':
 
         if data == '':
-            return JsonResponse({'verify': '密码不能为空','error_types':error_type})
+            return JsonResponse({'verify': '密码不能为空', 'error_types': error_type})
         else:
             # return JsonResponse({'verify': '请记住您输入的密码','error_types':error_type})
-            return JsonResponse({'verify':'','error_types':error_type})
+            return JsonResponse({'verify': '', 'error_types': error_type})
 
-    elif type =='用户名':
+    elif type == '用户名':
         if data == '':
-            return JsonResponse({'verify': '用户名不能为空','error_types':error_type})
+            return JsonResponse({'verify': '用户名不能为空', 'error_types': error_type})
         else:
             try:
-                user =models.BodyUser.objects.get(user_name=data)
+                user = models.BodyUser.objects.get(user_name=data)
             except models.BodyUser.DoesNotExist:
-                user =None
-            if user==None:
+                user = None
+            if user == None:
                 # return JsonResponse({'verify':'该邮箱可以使用','error_types':error_type})
-                return JsonResponse({'verify':'','error_types':error_type})
+                return JsonResponse({'verify': '', 'error_types': error_type})
             else:
-                return JsonResponse({'verify':'该用户名已被使用','error_types':error_type})
+                return JsonResponse({'verify': '该用户名已被使用', 'error_types': error_type})
 
-    elif type =='邮箱':
+    elif type == '邮箱':
         if data == '':
-            return JsonResponse({'verify': '邮箱不能为空','error_types':error_type})
+            return JsonResponse({'verify': '邮箱不能为空', 'error_types': error_type})
         else:
             try:
-                user =models.BodyUser.objects.get(email=data)
+                user = models.BodyUser.objects.get(email=data)
             except models.BodyUser.DoesNotExist:
-                user =None
-            if user==None:
+                user = None
+            if user == None:
                 # return JsonResponse({'verify':'该邮箱可以使用','error_types':error_type})
-                return JsonResponse({'verify':'','error_types':error_type})
+                return JsonResponse({'verify': '', 'error_types': error_type})
             else:
-                return JsonResponse({'verify':'该邮箱已被使用','error_types':error_type})
+                return JsonResponse({'verify': '该邮箱已被使用', 'error_types': error_type})
     else:
         # return JsonResponse({'verify':'请输入正确内容','error_types':error_type})
-        return JsonResponse({'verify':'请输入正确内容'})
+        return JsonResponse({'verify': '请输入正确内容'})
 
 
-def bookrack(request):   #书架
+def bookrack(request):  # 书架
 
     if request.session.has_key('userNumber'):
-        user_name =request.session['user_name']
-        user_object = models.BodyUser.objects.get(user_name=user_name)  #获取当前账户的对象
-        user_id = user_object.id   #获取当前账号的id
-        novel_all_object = models.bookrack.objects.filter(user_foregin=user_id).select_related('Noval_foregin')  #获取用户id值为当前用户id值的所有对象
+        user_name = request.session['user_name']
+        user_object = models.BodyUser.objects.get(user_name=user_name)  # 获取当前账户的对象
+        user_id = user_object.id  # 获取当前账号的id
+        novel_all_object = models.bookrack.objects.filter(user_foregin=user_id).select_related(
+            'Noval_foregin')  # 获取用户id值为当前用户id值的所有对象
         print(novel_all_object)
         for i in novel_all_object:
             print(i.Noval_foregin.book_url)
         # bookrack_object = models.bookrack.objects.get(user_foregin=user_id)   #从书架表中通过当前账号的id获取当前对象
         # book_id =bookrack_object.Noval_foregin    #获取当前书的id值
-        return render(request,'bookrack.html',{'user_name':user_name,'user_id':user_id,'novel_all_object':novel_all_object})
+        return render(request, 'bookrack.html',
+                      {'user_name': user_name, 'user_id': user_id, 'novel_all_object': novel_all_object})
     else:
-        return render(request,'bookrack.html')
+        return render(request, 'bookrack.html')
 
-#书架删除图书ajax
+
+# 书架删除图书ajax
 @csrf_exempt
 def del_book_ajax(request):
-    user_id =request.POST.get('user_id')   #获取用户id
-    book_id =request.POST.get('book_id')   #获取图书的id
-    print('user_id=',user_id)
-    print('book_id=',book_id)
-    book = models.bookrack.objects.get(user_foregin=user_id,Noval_foregin=book_id) #查找出书架中用户id和书id都匹配上的图书
+    user_id = request.POST.get('user_id')  # 获取用户id
+    book_id = request.POST.get('book_id')  # 获取图书的id
+    print('user_id=', user_id)
+    print('book_id=', book_id)
+    book = models.bookrack.objects.get(user_foregin=user_id, Noval_foregin=book_id)  # 查找出书架中用户id和书id都匹配上的图书
     # print(book)
     # print(book.id)
     book.delete()
-    return JsonResponse({'del':'删除成功'})
+    return JsonResponse({'del': '删除成功'})
 
 
-
-#添加图书到书架
+# 添加图书到书架
 def add_bookrack_ajax(request):
     if request.session.has_key('userNumber'):
-        user_name =request.session['user_name']   #获取当前用户名
-        book_id = request.POST.get('book_id')     #获取当前书籍的id
+        user_name = request.session['user_name']  # 获取当前用户名
+        book_id = request.POST.get('book_id')  # 获取当前书籍的id
         book_object = BodyNoval.objects.get(id=book_id)  # 获取当前书的对象
 
-        user_object = BodyUser.objects.get(user_name=user_name) #获取当前用户的对象
-        user_id = user_object.id                            #获取当前用户的id
+        user_object = BodyUser.objects.get(user_name=user_name)  # 获取当前用户的对象
+        user_id = user_object.id  # 获取当前用户的id
 
         # book_object = models.BodyNoval.objects.get(id=book_id)  #获取书名
         # new_update =book_object.book_update      #获取小说最近的更新时间
@@ -228,21 +306,19 @@ def add_bookrack_ajax(request):
         # chapter_object =models.ChapterUrls.objects.filter(book_url=book_url).order_by('-chapter_id')[0]   #从章节表中查找url跟图书url一样的所有章节，然后排序取第一个
         # new_chapter=chapter_object.chapter_name    #排完序后取他的最新章节名称
         # print(user_name,book_id,new_update,book_url,new_chapter)
-        print(user_id,book_id)
-        bookrack_object = models.bookrack()      #获得书架模型
+        print(user_id, book_id)
+        bookrack_object = models.bookrack()  # 获得书架模型
 
-        bookrack_object.user_foregin_id =user_id    #往书架表中添加账号的id
-        bookrack_object.Noval_foregin_id=book_id    #往书架表中添加书籍的id
+        bookrack_object.user_foregin_id = user_id  # 往书架表中添加账号的id
+        bookrack_object.Noval_foregin_id = book_id  # 往书架表中添加书籍的id
         # bookrack_object.user_foregin = user_object
         # bookrack_object.Noval_foregin =book_object
         bookrack_object.save()
         # book_id = bookrack_object
 
-        return JsonResponse({'verify':'收藏成功'})
+        return JsonResponse({'verify': '收藏成功'})
     else:
-        return JsonResponse({'verify':'加入失败，当前账号未登录'})
-
-
+        return JsonResponse({'verify': '加入失败，当前账号未登录'})
 
 
 # 章节信息
@@ -268,10 +344,12 @@ def chapter(request):
         user_name = request.session['user_name']
         return render(request, 'chapter.html',
                       {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id,
-                       'category':category,'user_name': user_name})
+                       'category': category, 'user_name': user_name})
     else:
         return render(request, 'chapter.html',
-                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id,'category':category})
+                      {'chapter_info': chapter_info, 'chapter_list': chapter_list, 'page': 1, 'book_id': book_id,
+                       'category': category})
+
 
 # 使用ajax跳转章节分页
 @csrf_exempt
@@ -290,44 +368,49 @@ def chapter_ajax(request):
     book_id = request_list.get('id')
     page = request_list.get('page')
 
-    chapter_info = models.BodyNoval.objects.filter(id =book_id)[0]
+    chapter_info = models.BodyNoval.objects.filter(id=book_id)[0]
     chapter_list = models.ChapterUrls.objects.filter(book_url=chapter_info.book_url).order_by('chapter_id').values()
-    chapter_list = chapter_list[(int(page)-1)*102:int(page)*102].values()
+    chapter_list = chapter_list[(int(page) - 1) * 102:int(page) * 102].values()
     chapter_list = list(chapter_list)
-    info = {'chapter_list':chapter_list,'page':int(page),'book_id':int(book_id)}
+    info = {'chapter_list': chapter_list, 'page': int(page), 'book_id': int(book_id)}
 
     return JsonResponse(info)
 
 
-def article(request):   #文章内容
+def article(request):  # 文章内容
     book_id = request.GET.get('id')
     chapter = request.GET.get('chapter')
     book = models.BodyNoval.objects.get(id=book_id)
-    book_category =request.GET.get('book_category')
-    book_name=request.GET.get('book_name')
-    info = models.Noval_room.objects.filter(book_foreign=book.book_url,book_chapter_id=chapter).values()
+    book_category = request.GET.get('book_category')
+    book_name = request.GET.get('book_name')
+    info = models.Noval_room.objects.filter(book_foreign=book.book_url, book_chapter_id=chapter).values()
     try:
         info = list(info)[0]
         info['book_content'] = str(info['book_content']).replace('\r', '')
     except IndexError:
-        info = {'book_section':'暂无此章内容'}
+        info = {'book_section': '暂无此章内容'}
     if request.session.has_key('userNumber'):
-        user_name =request.session['user_name']
-        return render(request, 'article.html', {"info": info,'book_id':book_id,'book_category':book_category,'book_name':book_name,'user_name':user_name})
+        user_name = request.session['user_name']
+        return render(request, 'article.html',
+                      {"info": info, 'book_id': book_id, 'book_category': book_category, 'book_name': book_name,
+                       'user_name': user_name})
     else:
-        return render(request, 'article.html', {"info": info,'book_category':book_category,'book_name':book_name,'book_id': book_id})
+        return render(request, 'article.html',
+                      {"info": info, 'book_category': book_category, 'book_name': book_name, 'book_id': book_id})
+
 
 @csrf_exempt
-def article_ajax(request):     #文章内容ajax
+def article_ajax(request):  # 文章内容ajax
     paramter = request.POST
     book = paramter.get('book')
     chapter = paramter.get('chapter')
-    info = models.Noval_room.objects.filter(book_foreign=book,book_chapter_id=chapter).values()
+    info = models.Noval_room.objects.filter(book_foreign=book, book_chapter_id=chapter).values()
     info = list(info)[0]
-    info['book_content'] = str(info['book_content']).replace('\r','')
+    info['book_content'] = str(info['book_content']).replace('\r', '')
     return JsonResponse(info)
 
-def ranking_list(request):    #排行榜
+
+def ranking_list(request):  # 排行榜
 
     # 获取所有书的信息
     noval = BodyNoval.objects.all()
@@ -398,10 +481,10 @@ def ranking_list(request):    #排行榜
         'zong6': zong6, 'zhou6': zhou6, 'yue6': yue6, 'ri6': ri6,
         'zong7': zong7, 'zhou7': zhou7, 'yue7': yue7, 'ri7': ri7,
     }
-    if request.session.has_key('userNumber'):   #判断当前是否有账号信息
+    if request.session.has_key('userNumber'):  # 判断当前是否有账号信息
         user_name = request.session['user_name']
         dict2 = {
-            'user_name':user_name,
+            'user_name': user_name,
             'zong': zong, 'zhou': zhou, 'yue': yue, 'ri': ri,
             'zong1': zong1, 'zhou1': zhou1, 'yue1': yue1, 'ri1': ri1,
             'zong2': zong2, 'zhou2': zhou2, 'yue2': yue2, 'ri2': ri2,
@@ -411,9 +494,10 @@ def ranking_list(request):    #排行榜
             'zong6': zong6, 'zhou6': zhou6, 'yue6': yue6, 'ri6': ri6,
             'zong7': zong7, 'zhou7': zhou7, 'yue7': yue7, 'ri7': ri7,
         }
-        return render(request, 'ranking_list.html',dict2)
+        return render(request, 'ranking_list.html', dict2)
     else:
         return render(request, 'ranking_list.html', dict1)
+
 
 # def classify(request):
 #
@@ -421,10 +505,9 @@ def ranking_list(request):    #排行榜
 #     return render(request, 'classify.html')
 
 
-#分类页面
-def classify(request,classify):
-
-    #查找所有类别的小说
+# 分类页面
+def classify(request, classify):
+    # 查找所有类别的小说
     noval = BodyNoval.objects.filter(book_category=classify)
     # 展示图片的6个小说
     zhans = noval[:6]
@@ -432,26 +515,24 @@ def classify(request,classify):
     updata = noval.order_by('book_update')[0:30]
     # 好看的玄幻小说
     hao = noval.order_by('-id')[0:30]
-    print('classify=',classify)
-    print('noval=',noval)
-    print('zhans=',zhans)
-    print('updata=',updata)
-    print('hao=',hao)
-
+    print('classify=', classify)
+    print('noval=', noval)
+    print('zhans=', zhans)
+    print('updata=', updata)
+    print('hao=', hao)
 
     # return render(request,'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
     if request.session.has_key('userNumber'):
         user_name = request.session['user_name']
-        return render(request, 'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao,'user_name':user_name})
+        return render(request, 'classify.html',
+                      {'classify': classify, 'zhans': zhans, 'updata': updata, 'hao': hao, 'user_name': user_name})
     else:
-        return render(request, 'classify.html',{'classify':classify,'zhans':zhans,'updata':updata,'hao':hao})
+        return render(request, 'classify.html', {'classify': classify, 'zhans': zhans, 'updata': updata, 'hao': hao})
 
 
 def all_book(request):
-
     return render(request, 'all_book.html')
 
+
 def retrieve_password(request):
-
     return render(request, 'retrieve_password.html')
-
